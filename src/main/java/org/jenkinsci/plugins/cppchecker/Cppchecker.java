@@ -127,7 +127,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          * This human readable name is used in the configuration screen.
          */
         public String getDisplayName() {
-            return "Say hello world";
+            return "Cppcheck - A tool for static C/C++ code analysis";
         }
 
         @Override
