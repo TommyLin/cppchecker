@@ -11,94 +11,86 @@
         <label>${%commands}</label>
     </f:entry>
 
-    <f:entry title="${%--dump}" help="/plugin/cppchecker/help-dump.html">
-        <f:checkbox name="cppchecker.dump" checked="${cppchecker.dump}" />
+    <f:entry title="--dump" help="/plugin/cppchecker/help-dump.html">
+        <f:checkbox field="dump" checked="${dump}" title="${%Dump xml data for each translation unit.}"/>
         <label>${%Dump xml data for each translation unit.}</label>
     </f:entry>
 
-    <f:entry title="--enable=id" help="/plugin/cppchecker/help-enable.html">
-        <label>${%Enable additional checks. The available ids are:}</label>
+    <f:entry title="-D[ID]" field="symbol" help="/plugin/cppchecker/help-symbol.html">
+        <f:textbox />
+        <label>${%Define preprocessor symbol.}</label>
     </f:entry>
 
-    <f:entry>
-        <f:checkbox name="cppchecker.force" checked="${h.defaultToTrue(cppchecker.force)}"  title="${%all}"/>
-        <st:nbsp/>
-        <st:nbsp/>
-        <f:checkbox name="cppchecker.force" checked="${cppchecker.force}"  title="${%warning}"/>
-        <f:checkbox name="cppchecker.force" checked="${cppchecker.force}"  title="${%style}"/>
-        <f:checkbox name="cppchecker.force" checked="${cppchecker.force}"  title="${%performance}"/>
-        <f:checkbox name="cppchecker.force" checked="${cppchecker.force}"  title="${%portability}"/>
-        <f:checkbox name="cppchecker.force" checked="${cppchecker.force}"  title="${%information}"/>
-        <f:checkbox name="cppchecker.force" checked="${cppchecker.force}"  title="${%unusedFunction}"/>
-        <f:checkbox name="cppchecker.force" checked="${cppchecker.force}"  title="${%missingInclude}"/>
-    </f:entry>
+    <f:block>
+        <f:optionalBlock field="enable" checked="${h.defaultToTrue(enable)}" title="--enable=id" help="/plugin/cppchecker/help-enable.html">
+            <f:entry>
+                <f:checkbox field="enable.all" checked="${h.defaultToTrue(enable.all)}" title="${%all}"/>
+                <f:checkbox field="enable.warning" checked="${enable.warning}"  title="${%warning}"/>
+                <f:checkbox field="enable.style" checked="${enable.style}"  title="${%style}"/>
+                <f:checkbox field="enable.performance" checked="${enable.performance}"  title="${%performance}"/>
+                <f:checkbox field="enable.portability" checked="${enable.portability}"  title="${%portability}"/>
+                <f:checkbox field="enable.information" checked="${enable.information}"  title="${%information}"/>
+                <f:checkbox field="enable.unusedFunction" checked="${enable.unusedFunction}"  title="${%unusedFunction}"/>
+                <f:checkbox field="enable.missingInclude" checked="${enable.missingInclude}"  title="${%missingInclude}"/>
+            </f:entry>
+        </f:optionalBlock>
+    </f:block>
 
-    <f:entry title="-f, --force" field="force" help="/plugin/cppchecker/help-force.html">
-        <f:checkbox name="cppchecker.force" checked="${h.defaultToTrue(cppchecker.force)}" />
+    <f:entry title="-f, --force" help="/plugin/cppchecker/help-force.html">
+        <f:checkbox field="force" checked="${h.defaultToTrue(force)}"/>
         <label>${%Force checking of all configurations in files.}</label>
     </f:entry>
 
-    <f:entry title="--inconclusive"  help="/plugin/cppchecker/help-inconclusive.html">
-        <f:checkbox name="cppchecker.inconclusive" checked="${h.defaultToTrue(cppchecker.inconclusive)}" />
+    <f:entry title="-I [dir]" field="include" help="/plugin/cppchecker/help-include.html">
+        <f:textbox />
+        <label>${%Give path to search for include files.}</label>
+    </f:entry>
+
+    <f:entry title="--inconclusive" help="/plugin/cppchecker/help-inconclusive.html">
+        <f:checkbox field="inconclusive" checked="${h.defaultToTrue(inconclusive)}"/>
         <label>${%Allow that Cppcheck reports even though the analysis is inconclusive.}</label>
     </f:entry>
 
     <f:entry title="-q, --quiet">
-        <f:checkbox name="cppchecker.quiet" checked="${h.defaultToTrue(builder.quiet)}" />
+        <f:checkbox field="quiet" checked="${h.defaultToTrue(quiet)}" />
         <label>${%Do not show progress reports.}</label>
     </f:entry>
 
-    <f:entry title="--std=id" help="/plugin/cppchecker/help-std.html">
-        <f:checkbox name="cppchecker.std" checked="${cppchecker.std}" title="${%Set standard.}"/>
-        <label>${%If not checked, defalt value is c11C and c++11.}</label>
-    </f:entry>
-
-    <f:entry>
-        <f:checkbox name="cppchecker.std" checked="${cppchecker.std}" title="${%posix}" disabled="true"/>
-        <f:checkbox name="cppchecker.std" checked="${cppchecker.std}" title="${%c89}"/>
-        <f:checkbox name="cppchecker.std" checked="${cppchecker.std}" title="${%c99}"/>
-        <f:checkbox name="cppchecker.std" checked="${h.defaultToTrue(cppchecker.std)}" title="${%c11C}"/>
-        <f:checkbox name="cppchecker.std" checked="${cppchecker.std}" title="${%c++03}"/>
-        <f:checkbox name="cppchecker.std" checked="${h.defaultToTrue(cppchecker.std)}" title="${%c++11}"/>
-    </f:entry>
-
     <f:block>
-        <table>
-            <f:optionalBlock name="std" title="--std=id" help="/plugin/cppchecker/help-std.html">
-                <f:entry>
-                    <f:checkbox name="cppchecker.std" checked="${cppchecker.std}" title="${%posix}" disabled="true"/>
-                    <f:checkbox name="cppchecker.std" checked="${cppchecker.std}" title="${%c89}"/>
-                    <f:checkbox name="cppchecker.std" checked="${cppchecker.std}" title="${%c99}"/>
-                    <f:checkbox name="cppchecker.std" checked="${h.defaultToTrue(cppchecker.std)}" title="${%c11C}"/>
-                    <f:checkbox name="cppchecker.std" checked="${cppchecker.std}" title="${%c++03}"/>
-                    <f:checkbox name="cppchecker.std" checked="${h.defaultToTrue(cppchecker.std)}" title="${%c++11}"/>
-                </f:entry>
-            </f:optionalBlock>
-        </table>
+        <f:optionalBlock field="std" title="--std=id" help="/plugin/cppchecker/help-std.html">
+            <f:entry>
+                <f:checkbox field="std.posix" checked="${std.posix}" title="posix"/>
+                <f:checkbox field="std.c89" checked="${std.c89}" title="c89"/>
+                <f:checkbox field="std.c99" checked="${std.c99}" title="c99"/>
+                <f:checkbox field="std.c11C" checked="${h.defaultToTrue(std.c11C)}" title="c11C"/>
+                <f:checkbox field="std.cpp03" checked="${std.cpp03}" title="c++03"/>
+                <f:checkbox field="std.std" checked="${h.defaultToTrue(std.std)}" title="c++11"/>
+            </f:entry>
+        </f:optionalBlock>
     </f:block>
 
-    <f:entry title="--suppress=spec">
-        <label>${%Suppress warnings that match [spec]. The format of [spec] is:}</label>
-    </f:entry>
-
-    <f:entry>
-        <f:checkbox name="${id}.config.configGraph.xSize" checked="${h.defaultToTrue(cppchecker.all)}" title="${%unusedFunction}"/>
-        <f:checkbox name="${id}.config.configGraph.xSize" checked="${h.defaultToTrue(cppchecker.all)}" title="${%variableScope}"/>
-        <f:checkbox name="${id}.config.configGraph.xSize" checked="${h.defaultToTrue(cppchecker.all)}" title="${%unmatchedSuppression}"/>
-    </f:entry>
+    <f:block>
+        <f:optionalBlock field="supress" checked="${h.defaultToTrue(supress)}" title="--suppress=spec" help="/plugin/cppchecker/help-suppress.html">
+            <f:entry>
+                <f:checkbox field="supress.unusedFunction" checked="${h.defaultToTrue(supress.unusedFunction)}" title="unusedFunction"/>
+                <f:checkbox field="supress.variableScope" checked="${h.defaultToTrue(supress.variableScope)}" title="variableScope"/>
+                <f:checkbox field="supress.unmatchedSuppression" checked="${h.defaultToTrue(supress.unmatchedSuppression)}" title="unmatchedSuppression"/>
+            </f:entry>
+        </f:optionalBlock>
+    </f:block>
 
     <f:entry title="-v, --verbose">
-        <f:checkbox name="cppchecker.inconclusive1" checked="${cppchecker.inconclusive1}" />
+        <f:checkbox field="verbose" checked="${verbose}"/>
         <label>${%Output more detailed error information.}</label>
     </f:entry>
 
     <f:entry title="--xml">
-        <f:checkbox name="cppchecker.inconclusive1" checked="${h.defaultToTrue(cppchecker.inconclusive1)}" />
+        <f:checkbox field="xml" checked="${h.defaultToTrue(xml)}" />
         <label>${%Write results in xml format to error stream stderr.}</label>
     </f:entry>
 
     <f:entry title="--xml-version=version">
-        <f:checkbox name="cppchecker.inconclusive1" checked="${h.defaultToTrue(cppchecker.inconclusive1)}" />
+        <f:checkbox field="xmlVersion" checked="${h.defaultToTrue(xmlVersion)}"/>
         <label>${%Select the XML file version. Currently versions 1 and 2 are available. The default version is 1.}</label>
     </f:entry>
 
