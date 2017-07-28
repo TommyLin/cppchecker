@@ -56,14 +56,14 @@
         </f:entry>
 
         <f:block>
-            <f:optionalBlock field="std" title="--std=id" help="/plugin/cppchecker/help-std.html">
+            <f:optionalBlock field="std" checked="${instance.enStd}" title="--std=id" help="/plugin/cppchecker/help-std.html">
                 <f:entry>
-                    <f:checkbox field="std.posix" checked="${std.posix}" title="posix"/>
-                    <f:checkbox field="std.c89" checked="${std.c89}" title="c89"/>
-                    <f:checkbox field="std.c99" checked="${std.c99}" title="c99"/>
-                    <f:checkbox field="std.c11C" checked="${h.defaultToTrue(std.c11C)}" title="c11C"/>
-                    <f:checkbox field="std.cpp03" checked="${std.cpp03}" title="c++03"/>
-                    <f:checkbox field="std.std" checked="${h.defaultToTrue(std.std)}" title="c++11"/>
+                    <f:checkbox field="posix" checked="${posix}" title="posix"/>
+                    <f:checkbox field="c89" checked="${c89}" title="c89"/>
+                    <f:checkbox field="c99" checked="${c99}" title="c99"/>
+                    <f:checkbox field="c11C" checked="${c11C}" title="c11C"/>
+                    <f:checkbox field="cpp03" checked="${cpp03}" title="c++03"/>
+                    <f:checkbox field="cpp11" checked="${cpp11}" title="c++11"/>
                 </f:entry>
             </f:optionalBlock>
         </f:block>

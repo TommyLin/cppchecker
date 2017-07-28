@@ -54,14 +54,38 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     private final boolean inconclusive;
     private final boolean quiet;
 
+    private final boolean enStd;
+    private final StdBlock std;
+
+    public static class StdBlock {
+
+        private final boolean posix;
+        private final boolean c89;
+        private final boolean c99;
+        private final boolean c11C;
+        private final boolean cpp03;
+        private final boolean cpp11;
+
+        @DataBoundConstructor
+        public StdBlock(boolean posix, boolean c89, boolean c99, boolean c11C,
+                boolean cpp03, boolean cpp11) {
+            this.posix = posix;
+            this.c89 = c89;
+            this.c99 = c99;
+            this.c11C = c11C;
+            this.cpp03 = cpp03;
+            this.cpp11 = cpp11;
+        }
+    }
+
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
     public Cppchecker(String name, boolean dump, String symbol,
             boolean enAll, boolean enWarning, boolean enStyle,
             boolean enPerformance, boolean enPortability, boolean enInformation,
             boolean enUnusedFunction, boolean enMissingInclude,
-            boolean force, String includeDir, boolean inconclusive,
-            boolean quiet
+            boolean force, String includeDir, boolean inconclusive, boolean quiet,
+            StdBlock std
     ) {
         this.name = name;
 
@@ -82,6 +106,9 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.includeDir = includeDir;
         this.inconclusive = inconclusive;
         this.quiet = quiet;
+        this.std = std;
+        this.enStd = (std == null) ? false
+                : (std.posix || std.c89 || std.c99 || std.c11C || std.cpp03 || std.cpp11);
     }
 
     /**
@@ -256,6 +283,34 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      */
     public boolean getQuiet() {
         return quiet;
+    }
+
+    public boolean getEnStd() {
+        return enStd;
+    }
+
+    public boolean getPosix() {
+        return std == null ? false : std.posix;
+    }
+
+    public boolean getC89() {
+        return std == null ? false : std.c89;
+    }
+
+    public boolean getC99() {
+        return std == null ? false : std.c99;
+    }
+
+    public boolean getC11C() {
+        return std == null ? false : std.c11C;
+    }
+
+    public boolean getCpp03() {
+        return std == null ? false : std.cpp03;
+    }
+
+    public boolean getCpp11() {
+        return std == null ? false : std.cpp11;
     }
 
     @Override
