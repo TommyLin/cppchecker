@@ -51,13 +51,15 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     private final boolean force;
 
+    private final String includeDir;
+
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
     public Cppchecker(String name, boolean dump, String symbol,
             boolean enAll, boolean enWarning, boolean enStyle,
             boolean enPerformance, boolean enPortability, boolean enInformation,
             boolean enUnusedFunction, boolean enMissingInclude,
-            boolean force
+            boolean force, String includeDir
     ) {
         this.name = name;
 
@@ -75,6 +77,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.enMissingInclude = enMissingInclude;
 
         this.force = force;
+
+        this.includeDir = includeDir;
     }
 
     /**
@@ -213,6 +217,18 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      */
     public boolean getForce() {
         return force;
+    }
+
+    /**
+     * <B>-I [dir]</B><br>
+     * Give path to search for include files. Give several -I parameters to give
+     * several paths. First given path is searched for contained header files
+     * first. If paths are relative to source files, this is not needed.
+     *
+     * @return Path to search for include files
+     */
+    public String getIncludeDir() {
+        return includeDir;
     }
 
     @Override

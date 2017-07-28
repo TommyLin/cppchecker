@@ -19,8 +19,8 @@
         </f:entry>
 
         <f:entry title="-D[ID]" field="symbol" help="/plugin/cppchecker/help-symbol.html">
-            <f:textbox />
             <label>${%Define preprocessor symbol. Example: '-DDEBUG=1 -D__cplusplus'.}</label>
+            <f:textbox />
         </f:entry>
 
         <f:entry title="--enable=id" help="/plugin/cppchecker/help-enable.html">
@@ -40,9 +40,9 @@
             <label>${%Force checking of all configurations in files.}</label>
         </f:entry>
 
-        <f:entry title="-I [dir]" field="include" help="/plugin/cppchecker/help-include.html">
-            <f:textbox />
+        <f:entry title="-I [dir]" field="includeDir" help="/plugin/cppchecker/help-include.html">
             <label>${%Give path to search for include files.}</label>
+            <f:textbox />
         </f:entry>
 
         <f:entry title="--inconclusive" help="/plugin/cppchecker/help-inconclusive.html">
