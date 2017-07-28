@@ -24,7 +24,7 @@
         </f:entry>
 
         <f:entry title="--enable=id" help="/plugin/cppchecker/help-enable.html">
-            <f:checkbox field="enAll" checked="${enAll}" title="all"/>
+            <f:checkbox field="enAll" checked="${h.defaultToTrue(instance.enAll)}" title="all"/>
             <f:checkbox field="enWarning" checked="${enWarning}" title="warning"/>
             <f:checkbox field="enStyle" checked="${enStyle}" title="style"/>
             <f:checkbox field="enPerformance" checked="${enPerformance}" title="performance"/>
@@ -36,7 +36,7 @@
 
 
         <f:entry title="-f, --force" help="/plugin/cppchecker/help-force.html">
-            <f:checkbox field="force" checked="${h.defaultToTrue(force)}"/>
+            <f:checkbox field="force" checked="${force}"/>
             <label>${%Force checking of all configurations in files.}</label>
         </f:entry>
 

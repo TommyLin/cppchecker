@@ -49,12 +49,15 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     private final boolean enUnusedFunction;
     private final boolean enMissingInclude;
 
+    private final boolean force;
+
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
     public Cppchecker(String name, boolean dump, String symbol,
             boolean enAll, boolean enWarning, boolean enStyle,
             boolean enPerformance, boolean enPortability, boolean enInformation,
-            boolean enUnusedFunction, boolean enMissingInclude
+            boolean enUnusedFunction, boolean enMissingInclude,
+            boolean force
     ) {
         this.name = name;
 
@@ -71,6 +74,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.enUnusedFunction = enUnusedFunction;
         this.enMissingInclude = enMissingInclude;
 
+        this.force = force;
     }
 
     /**
@@ -197,6 +201,18 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      */
     public boolean getEnMissingInclude() {
         return enMissingInclude;
+    }
+
+    /**
+     * <B>-f, --force</B><br>
+     * Force checking of all configurations in files. If used together with
+     * '--max-configs=', the last option is the one that is effective.
+     *
+     * @return true: Enable<br>
+     * false: Disable
+     */
+    public boolean getForce() {
+        return force;
     }
 
     @Override
