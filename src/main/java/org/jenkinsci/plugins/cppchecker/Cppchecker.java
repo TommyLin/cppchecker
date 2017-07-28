@@ -39,20 +39,22 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     private final boolean dump;
     private final String symbol;
 
-    private final boolean enableAll;
-    private final boolean enableWarning;
-    private final boolean enableStyle;
-    private final boolean enablePerformance;
-    private final boolean enablePortability;
-    private final boolean enableInformation;
-    private final boolean enableUnusedFunction;
-    private final boolean enableMissingInclude;
+    /* Enable additional checks. */
+    private final boolean enAll;
+    private final boolean enWarning;
+    private final boolean enStyle;
+    private final boolean enPerformance;
+    private final boolean enPortability;
+    private final boolean enInformation;
+    private final boolean enUnusedFunction;
+    private final boolean enMissingInclude;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
     public Cppchecker(String name, boolean dump, String symbol,
-            boolean enableAll, boolean enableWarning, boolean enableStyle, boolean enablePerformance,
-            boolean enablePortability, boolean enableInformation, boolean enableUnusedFunction, boolean enableMissingInclude
+            boolean enAll, boolean enWarning, boolean enStyle,
+            boolean enPerformance, boolean enPortability, boolean enInformation,
+            boolean enUnusedFunction, boolean enMissingInclude
     ) {
         this.name = name;
 
@@ -60,14 +62,15 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.symbol = symbol;
 
         /* Enable additional checks. */
-        this.enableAll = enableAll;
-        this.enableWarning = enableWarning;
-        this.enableStyle = enableStyle;
-        this.enablePerformance = enablePerformance;
-        this.enablePortability = enablePortability;
-        this.enableInformation = enableInformation;
-        this.enableUnusedFunction = enableUnusedFunction;
-        this.enableMissingInclude = enableMissingInclude;
+        this.enAll = enAll;
+        this.enWarning = enWarning;
+        this.enStyle = enStyle;
+        this.enPerformance = enPerformance;
+        this.enPortability = enPortability;
+        this.enInformation = enInformation;
+        this.enUnusedFunction = enUnusedFunction;
+        this.enMissingInclude = enMissingInclude;
+
     }
 
     /**
@@ -112,8 +115,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnableAll() {
-        return enableAll;
+    public boolean getEnAll() {
+        return enAll;
     }
 
     /**
@@ -123,8 +126,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnableWarning() {
-        return enableWarning;
+    public boolean getEnWarning() {
+        return enWarning;
     }
 
     /**
@@ -135,8 +138,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnableStyle() {
-        return enableStyle;
+    public boolean getEnStyle() {
+        return enStyle;
     }
 
     /**
@@ -146,8 +149,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnablePerformance() {
-        return enablePerformance;
+    public boolean getEnPerformance() {
+        return enPerformance;
     }
 
     /**
@@ -157,8 +160,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnablePortability() {
-        return enablePortability;
+    public boolean getEnPortability() {
+        return enPortability;
     }
 
     /**
@@ -168,8 +171,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnableInformation() {
-        return enableInformation;
+    public boolean getEnInformation() {
+        return enInformation;
     }
 
     /**
@@ -180,8 +183,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnableUnusedFunction() {
-        return enableUnusedFunction;
+    public boolean getEnUnusedFunction() {
+        return enUnusedFunction;
     }
 
     /**
@@ -192,8 +195,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnableMissingInclude() {
-        return enableMissingInclude;
+    public boolean getEnMissingInclude() {
+        return enMissingInclude;
     }
 
     @Override

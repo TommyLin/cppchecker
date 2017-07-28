@@ -24,14 +24,14 @@
         </f:entry>
 
         <f:entry title="--enable=id" help="/plugin/cppchecker/help-enable.html">
-            <f:checkbox field="enableAll" checked="${enableAll}" title="all"/>
-            <f:checkbox field="enableWarning" checked="${enableWarning}" title="warning"/>
-            <f:checkbox field="enableStyle" checked="${enableStyle}" title="style"/>
-            <f:checkbox field="enablePerformance" checked="${enablePerformance}" title="performance"/>
-            <f:checkbox field="enablePortability" checked="${enablePortability}" title="portability"/>
-            <f:checkbox field="enableInformation" checked="${enableInformation}" title="information"/>
-            <f:checkbox field="enableUnusedFunction" checked="${enableUnusedFunction}" title="unusedFunction"/>
-            <f:checkbox field="enableMissingInclude" checked="${enableMissingInclude}" title="missingInclude"/>
+            <f:checkbox field="enAll" checked="${enAll}" title="all"/>
+            <f:checkbox field="enWarning" checked="${enWarning}" title="warning"/>
+            <f:checkbox field="enStyle" checked="${enStyle}" title="style"/>
+            <f:checkbox field="enPerformance" checked="${enPerformance}" title="performance"/>
+            <f:checkbox field="enPortability" checked="${enPortability}" title="portability"/>
+            <f:checkbox field="enInformation" checked="${enInformation}" title="information"/>
+            <f:checkbox field="enUnusedFunction" checked="${enUnusedFunction}" title="unusedFunction"/>
+            <f:checkbox field="enMissingInclude" checked="${enMissingInclude}" title="missingInclude"/>
         </f:entry>
 
 
