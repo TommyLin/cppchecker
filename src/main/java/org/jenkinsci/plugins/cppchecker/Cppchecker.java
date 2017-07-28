@@ -52,6 +52,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     private final boolean force;
     private final String includeDir;
     private final boolean inconclusive;
+    private final boolean quiet;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
@@ -59,7 +60,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             boolean enAll, boolean enWarning, boolean enStyle,
             boolean enPerformance, boolean enPortability, boolean enInformation,
             boolean enUnusedFunction, boolean enMissingInclude,
-            boolean force, String includeDir, boolean inconclusive
+            boolean force, String includeDir, boolean inconclusive,
+            boolean quiet
     ) {
         this.name = name;
 
@@ -79,6 +81,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.force = force;
         this.includeDir = includeDir;
         this.inconclusive = inconclusive;
+        this.quiet = quiet;
     }
 
     /**
@@ -242,6 +245,17 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      */
     public boolean getInconclusive() {
         return inconclusive;
+    }
+
+    /**
+     * <B>-q, --quiet</B><br>
+     * Do not show progress reports.
+     *
+     * @return true: Enable<br>
+     * false: Disable
+     */
+    public boolean getQuiet() {
+        return quiet;
     }
 
     @Override
