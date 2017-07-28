@@ -37,13 +37,15 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     private final String name;
     private final boolean dump;
+    private final String symbol;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public Cppchecker(String name, boolean dump) {
+    public Cppchecker(String name, boolean dump, String symbol) {
         this.name = name;
 
         this.dump = dump;
+        this.symbol = symbol;
     }
 
     /**
@@ -57,10 +59,22 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     /**
      *
-     * @return dump TODO: description
+     * @return dump Dump xml data for each translation unit. The dump files have
+     * the extension .dump and contain ast, tokenlist, symboldatabase,
+     * valueflow.
      */
     public boolean getDump() {
         return dump;
+    }
+
+    /**
+     *
+     * @return symbol Define preprocessor symbol. Unless --max-configs or
+     * --force is used, Cppcheck will only check the given configuration when -D
+     * is used. Example: '-DDEBUG=1 -D__cplusplus'.
+     */
+    public String getSymbol() {
+        return symbol;
     }
 
     @Override
