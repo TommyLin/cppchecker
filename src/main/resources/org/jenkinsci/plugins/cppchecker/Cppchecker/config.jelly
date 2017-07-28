@@ -46,7 +46,7 @@
         </f:entry>
 
         <f:entry title="--inconclusive" help="/plugin/cppchecker/help-inconclusive.html">
-            <f:checkbox field="inconclusive" checked="${h.defaultToTrue(inconclusive)}"/>
+            <f:checkbox field="inconclusive" checked="${h.defaultToTrue(instance.inconclusive)}"/>
             <label>${%Allow that Cppcheck reports even though the analysis is inconclusive.}</label>
         </f:entry>
 

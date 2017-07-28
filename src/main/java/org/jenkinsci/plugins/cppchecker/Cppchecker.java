@@ -50,8 +50,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     private final boolean enMissingInclude;
 
     private final boolean force;
-
     private final String includeDir;
+    private final boolean inconclusive;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
@@ -59,7 +59,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             boolean enAll, boolean enWarning, boolean enStyle,
             boolean enPerformance, boolean enPortability, boolean enInformation,
             boolean enUnusedFunction, boolean enMissingInclude,
-            boolean force, String includeDir
+            boolean force, String includeDir, boolean inconclusive
     ) {
         this.name = name;
 
@@ -77,8 +77,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.enMissingInclude = enMissingInclude;
 
         this.force = force;
-
         this.includeDir = includeDir;
+        this.inconclusive = inconclusive;
     }
 
     /**
@@ -229,6 +229,19 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      */
     public String getIncludeDir() {
         return includeDir;
+    }
+
+    /**
+     * <B>--inconclusive</B><br>
+     * Allow that Cppcheck reports even though the analysis is inconclusive.
+     * There are false positives with this option. Each result must be carefully
+     * investigated before you know if it is good or bad.
+     *
+     * @return true: Enable<br>
+     * false: Disable
+     */
+    public boolean getInconclusive() {
+        return inconclusive;
     }
 
     @Override
