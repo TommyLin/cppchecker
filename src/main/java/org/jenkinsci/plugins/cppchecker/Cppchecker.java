@@ -36,11 +36,14 @@ import java.io.IOException;
 public class Cppchecker extends Builder implements SimpleBuildStep {
 
     private final String name;
+    private final boolean dump;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public Cppchecker(String name) {
+    public Cppchecker(String name, boolean dump) {
         this.name = name;
+
+        this.dump = dump;
     }
 
     /**
@@ -50,6 +53,14 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     *
+     * @return dump TODO: description
+     */
+    public boolean getDump() {
+        return dump;
     }
 
     @Override
@@ -140,7 +151,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          */
         @Override
         public String getDisplayName() {
-            return "Cppcheck - static C/C++ code analysis";
+            return "Execute cppcheck";
         }
 
         @Override
