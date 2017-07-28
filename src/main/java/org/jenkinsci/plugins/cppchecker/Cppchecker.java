@@ -45,6 +45,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     /**
      * We'll use this from the {@code config.jelly}.
+     * @return name
      */
     public String getName() {
         return name;
@@ -108,6 +109,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          *      Note that returning {@link FormValidation#error(String)} does not
          *      prevent the form from being saved. It just means that a message
          *      will be displayed to the user. 
+         * @throws java.io.IOException TODO: Add description
+         * @throws javax.servlet.ServletException TODO: Add description
          */
         public FormValidation doCheckName(@QueryParameter String value)
                 throws IOException, ServletException {
@@ -118,6 +121,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             return FormValidation.ok();
         }
 
+        @Override
         public boolean isApplicable(Class<? extends AbstractProject> aClass) {
             // Indicates that this builder can be used with all kinds of project types 
             return true;
@@ -125,9 +129,11 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
         /**
          * This human readable name is used in the configuration screen.
+         * @return The name
          */
+        @Override
         public String getDisplayName() {
-            return "Cppcheck - A tool for static C/C++ code analysis";
+            return "Cppcheck - static C/C++ code analysis";
         }
 
         @Override
@@ -146,6 +152,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          *
          * The method name is bit awkward because global.jelly calls this method to determine
          * the initial state of the checkbox by the naming convention.
+         * @return useFrench
          */
         public boolean getUseFrench() {
             return useFrench;
