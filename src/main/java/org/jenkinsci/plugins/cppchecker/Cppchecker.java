@@ -58,20 +58,25 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     }
 
     /**
+     * <B>--dump</B><br>
+     * Dump xml data for each translation unit. The dump files have the
+     * extension .dump and contain ast, tokenlist, symboldatabase, valueflow.
      *
-     * @return dump Dump xml data for each translation unit. The dump files have
-     * the extension .dump and contain ast, tokenlist, symboldatabase,
-     * valueflow.
+     * @return true: Dump xml data for each translation unit<br>
+     * false: No dump file
      */
     public boolean getDump() {
         return dump;
     }
 
     /**
+     * <B>-D[ID]</B><br>
+     * Define preprocessor symbol. Unless --max-configs or --force is used,
+     * Cppcheck will only check the given configuration when -D is used.<br>
+     * Example: '-DDEBUG=1 -D__cplusplus'.
      *
-     * @return symbol Define preprocessor symbol. Unless --max-configs or
-     * --force is used, Cppcheck will only check the given configuration when -D
-     * is used. Example: '-DDEBUG=1 -D__cplusplus'.
+     * @return null: not define any preprocessor symbol<br>
+     * symbol: Preprocessor symbol
      */
     public String getSymbol() {
         return symbol;
