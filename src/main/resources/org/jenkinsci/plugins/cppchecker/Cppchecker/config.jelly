@@ -14,29 +14,26 @@
     <f:section title="Cppcheck Options">
 
         <f:entry title="--dump" help="/plugin/cppchecker/help-dump.html">
-            <f:checkbox field="dump" checked="${dump}" title="${%Dump xml data for each translation unit.}"/>
+            <f:checkbox field="dump" checked="${dump}"/>
             <label>${%Dump xml data for each translation unit.}</label>
         </f:entry>
 
         <f:entry title="-D[ID]" field="symbol" help="/plugin/cppchecker/help-symbol.html">
             <f:textbox />
-            <label>${%Define preprocessor symbol.}</label>
+            <label>${%Define preprocessor symbol. Example: '-DDEBUG=1 -D__cplusplus'.}</label>
         </f:entry>
 
-        <f:block>
-            <f:optionalBlock field="enable" checked="${h.defaultToTrue(enable)}" title="--enable=id" help="/plugin/cppchecker/help-enable.html">
-                <f:entry>
-                    <f:checkbox field="enable.all" checked="${h.defaultToTrue(enable.all)}" title="${%all}"/>
-                    <f:checkbox field="enable.warning" checked="${enable.warning}"  title="${%warning}"/>
-                    <f:checkbox field="enable.style" checked="${enable.style}"  title="${%style}"/>
-                    <f:checkbox field="enable.performance" checked="${enable.performance}"  title="${%performance}"/>
-                    <f:checkbox field="enable.portability" checked="${enable.portability}"  title="${%portability}"/>
-                    <f:checkbox field="enable.information" checked="${enable.information}"  title="${%information}"/>
-                    <f:checkbox field="enable.unusedFunction" checked="${enable.unusedFunction}"  title="${%unusedFunction}"/>
-                    <f:checkbox field="enable.missingInclude" checked="${enable.missingInclude}"  title="${%missingInclude}"/>
-                </f:entry>
-            </f:optionalBlock>
-        </f:block>
+        <f:entry title="--enable=id" help="/plugin/cppchecker/help-enable.html">
+            <f:checkbox field="enableAll" checked="${enableAll}" title="all"/>
+            <f:checkbox field="enableWarning" checked="${enableWarning}" title="warning"/>
+            <f:checkbox field="enableStyle" checked="${enableStyle}" title="style"/>
+            <f:checkbox field="enablePerformance" checked="${enablePerformance}" title="performance"/>
+            <f:checkbox field="enablePortability" checked="${enablePortability}" title="portability"/>
+            <f:checkbox field="enableInformation" checked="${enableInformation}" title="information"/>
+            <f:checkbox field="enableUnusedFunction" checked="${enableUnusedFunction}" title="unusedFunction"/>
+            <f:checkbox field="enableMissingInclude" checked="${enableMissingInclude}" title="missingInclude"/>
+        </f:entry>
+
 
         <f:entry title="-f, --force" help="/plugin/cppchecker/help-force.html">
             <f:checkbox field="force" checked="${h.defaultToTrue(force)}"/>

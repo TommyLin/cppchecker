@@ -39,13 +39,35 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     private final boolean dump;
     private final String symbol;
 
+    private final boolean enableAll;
+    private final boolean enableWarning;
+    private final boolean enableStyle;
+    private final boolean enablePerformance;
+    private final boolean enablePortability;
+    private final boolean enableInformation;
+    private final boolean enableUnusedFunction;
+    private final boolean enableMissingInclude;
+
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public Cppchecker(String name, boolean dump, String symbol) {
+    public Cppchecker(String name, boolean dump, String symbol,
+            boolean enableAll, boolean enableWarning, boolean enableStyle, boolean enablePerformance,
+            boolean enablePortability, boolean enableInformation, boolean enableUnusedFunction, boolean enableMissingInclude
+    ) {
         this.name = name;
 
         this.dump = dump;
         this.symbol = symbol;
+
+        /* Enable additional checks. */
+        this.enableAll = enableAll;
+        this.enableWarning = enableWarning;
+        this.enableStyle = enableStyle;
+        this.enablePerformance = enablePerformance;
+        this.enablePortability = enablePortability;
+        this.enableInformation = enableInformation;
+        this.enableUnusedFunction = enableUnusedFunction;
+        this.enableMissingInclude = enableMissingInclude;
     }
 
     /**
@@ -80,6 +102,98 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      */
     public String getSymbol() {
         return symbol;
+    }
+
+    /**
+     * <B>--enable=all</B><br>
+     * Enable all checks. It is recommended to only use --enable=all when the
+     * whole program is scanned, because this enables unusedFunction.
+     *
+     * @return true: Enable<br>
+     * false: Disable
+     */
+    public boolean getEnableAll() {
+        return enableAll;
+    }
+
+    /**
+     * <B>--enable=warning</B><br>
+     * Enable warning messages.
+     *
+     * @return true: Enable<br>
+     * false: Disable
+     */
+    public boolean getEnableWarning() {
+        return enableWarning;
+    }
+
+    /**
+     * <B>--enable=style</B><br>
+     * Enable all coding style checks. All messages with the severities 'style',
+     * 'performance' and 'portability' are enabled.
+     *
+     * @return true: Enable<br>
+     * false: Disable
+     */
+    public boolean getEnableStyle() {
+        return enableStyle;
+    }
+
+    /**
+     * <B>--enable=performance</B><br>
+     * Enable performance messages
+     *
+     * @return true: Enable<br>
+     * false: Disable
+     */
+    public boolean getEnablePerformance() {
+        return enablePerformance;
+    }
+
+    /**
+     * <B>--enable=portability</B><br>
+     * Enable portability messages
+     *
+     * @return true: Enable<br>
+     * false: Disable
+     */
+    public boolean getEnablePortability() {
+        return enablePortability;
+    }
+
+    /**
+     * <B>--enable=information</B><br>
+     * Enable information messages
+     *
+     * @return true: Enable<br>
+     * false: Disable
+     */
+    public boolean getEnableInformation() {
+        return enableInformation;
+    }
+
+    /**
+     * <B>--enable=unusedFunction</B><br>
+     * Check for unused functions. It is recommend to only enable this when the
+     * whole program is scanned.
+     *
+     * @return true: Enable<br>
+     * false: Disable
+     */
+    public boolean getEnableUnusedFunction() {
+        return enableUnusedFunction;
+    }
+
+    /**
+     * <B>--enable=missingInclude</B><br>
+     * Warn if there are missing includes. For detailed information, use
+     * '--check-config'.
+     *
+     * @return true: Enable<br>
+     * false: Disable
+     */
+    public boolean getEnableMissingInclude() {
+        return enableMissingInclude;
     }
 
     @Override
