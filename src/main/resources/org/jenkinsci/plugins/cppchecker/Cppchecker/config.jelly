@@ -11,6 +11,10 @@
         <label>${%commands}</label>
     </f:entry>
 
+    <f:entry title="${%command}">
+        <label field="command">${instance.command}</label>
+    </f:entry>
+
     <f:section title="Cppcheck Options">
 
         <f:entry title="--dump" help="/plugin/cppchecker/help-dump.html">

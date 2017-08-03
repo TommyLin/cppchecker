@@ -35,6 +35,8 @@ import java.io.IOException;
  */
 public class Cppchecker extends Builder implements SimpleBuildStep {
 
+    private String command;
+
     private final String name;
     private final boolean dump;
     private final String symbol;
@@ -109,6 +111,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.std = std;
         this.enStd = (std == null) ? false
                 : (std.posix || std.c89 || std.c99 || std.c11C || std.cpp03 || std.cpp11);
+
+        syncCommands();
     }
 
     /**
@@ -313,6 +317,67 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         return std == null ? false : std.cpp11;
     }
 
+    private String getEnableOptions() {
+        String selections, enableOptions;
+
+        selections = (enAll ? "all" : "")
+                + (enWarning ? ",warning" : "")
+                + (enStyle ? ",style" : "")
+                + (enPerformance ? ",performance" : "")
+                + (enPortability ? ",portability" : "")
+                + (enInformation ? ",information" : "")
+                + (enUnusedFunction ? ",unusedFunction" : "")
+                + (enMissingInclude ? ",missingInclude" : "");
+
+        if (selections.startsWith(",")) {
+            selections = selections.substring(1);
+        }
+
+        if (selections.length() == 0) {
+            enableOptions = "";
+        } else {
+            enableOptions = " --ebable=" + selections;
+        }
+
+        return enableOptions;
+    }
+
+    private String getStandardOptions() {
+        String standardOptions;
+
+        if (std != null) {
+            standardOptions = (std.posix ? " --std=posix" : "")
+                    + (std.c89 ? " --std=c89" : "")
+                    + (std.c99 ? " --std=c99" : "")
+                    + (std.c11C ? " --std=c11C" : "")
+                    + (std.cpp03 ? " --std=c++03" : "")
+                    + (std.cpp11 ? " --std=c++11" : "");
+        } else {
+            standardOptions = "";
+        }
+
+        return standardOptions;
+    }
+
+    private void syncCommands() {
+        final String options;
+
+        options = (dump ? " --dump" : "")
+                + ((symbol != null) ? " -D" + this.symbol : "")
+                + getEnableOptions()
+                + (force ? " -f" : "")
+                + ((includeDir != null) ? " -I" + this.includeDir : "")
+                + (inconclusive ? " --inconclusive" : "")
+                + (quiet ? " -q" : "")
+                + getStandardOptions();
+
+        command = "cppcheck" + options;
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
     @Override
     public void perform(Run<?, ?> build, FilePath workspace, Launcher launcher, TaskListener listener) {
         // This is where you 'build' the project.
@@ -386,6 +451,15 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                 return FormValidation.warning("Isn't the name too short?");
             }
             return FormValidation.ok();
+        }
+
+        public FormValidation doCheckDump(@QueryParameter String value)
+                throws IOException, ServletException {
+            if ("true".equals(value)) {
+                return FormValidation.warning("Enable dump!!!");
+            } else {
+                return FormValidation.warning("Disable dump!!!");
+            }
         }
 
         @Override
