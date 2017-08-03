@@ -66,6 +66,9 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     private final boolean verbose;
 
+    private final boolean xml;
+    private final boolean xmlVersion;
+
     public static class StdBlock {
 
         private final boolean posix;
@@ -95,7 +98,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             boolean enUnusedFunction, boolean enMissingInclude,
             boolean force, String includeDir, boolean inconclusive, boolean quiet,
             StdBlock std, boolean unmatchedSuppression, boolean unusedFunction,
-            boolean variableScope, boolean verbose
+            boolean variableScope, boolean verbose, boolean xml, boolean xmlVersion
     ) {
         this.name = name;
 
@@ -128,6 +131,9 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.variableScope = variableScope;
 
         this.verbose = verbose;
+
+        this.xml = xml;
+        this.xmlVersion = xmlVersion;
     }
 
     /**
@@ -346,6 +352,14 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     public boolean getVerbose() {
         return verbose;
+    }
+
+    public boolean getXml() {
+        return xml;
+    }
+
+    public boolean getXmlVersion() {
+        return xmlVersion;
     }
 
     private String getEnableOptions() {

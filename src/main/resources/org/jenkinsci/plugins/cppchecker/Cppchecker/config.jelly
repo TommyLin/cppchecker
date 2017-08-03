@@ -84,13 +84,13 @@
         </f:entry>
 
         <f:entry title="--xml">
-            <f:checkbox field="xml" checked="${h.defaultToTrue(xml)}" />
+            <f:checkbox field="xml" checked="${h.defaultToTrue(instance.xml)}" />
             <label>${%Write results in xml format to error stream stderr.}</label>
         </f:entry>
 
-        <f:entry title="--xml-version=version">
-            <f:checkbox field="xmlVersion" checked="${h.defaultToTrue(xmlVersion)}"/>
-            <label>${%Select the XML file version. Currently versions 1 and 2 are available. The default version is 1.}</label>
+        <f:entry title="--xml-version=2" help="/plugin/cppchecker/help-xmlVersion.html">
+            <f:checkbox field="xmlVersion" checked="${h.defaultToTrue(instance.xmlVersion)}"/>
+            <label>${%Checked to select the XML file version 2. }</label>
         </f:entry>
 
     </f:section>
