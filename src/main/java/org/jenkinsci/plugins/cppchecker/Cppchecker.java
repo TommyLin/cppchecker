@@ -123,8 +123,6 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.enStd = (std == null) ? false
                 : (std.posix || std.c89 || std.c99 || std.c11C || std.cpp03 || std.cpp11);
 
-        syncCommands();
-
         /* Suppress warnings */
         this.unmatchedSuppression = unmatchedSuppression;
         this.unusedFunction = unusedFunction;
@@ -134,6 +132,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
         this.xml = xml;
         this.xmlVersion = xmlVersion;
+
+        syncCommands();
     }
 
     /**
@@ -414,7 +414,13 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                 + ((includeDir != null) ? " -I" + this.includeDir : "")
                 + (inconclusive ? " --inconclusive" : "")
                 + (quiet ? " -q" : "")
-                + getStandardOptions();
+                + getStandardOptions()
+                + (unmatchedSuppression ? " --suppress=unmatchedSuppression" : "")
+                + (unusedFunction ? " --suppress=unusedFunction" : "")
+                + (variableScope ? " --suppress=variableScope" : "")
+                + (verbose ? " -v" : "")
+                + (xml ? " --xml" : "")
+                + (xmlVersion ? " --xml-version=2" : "");
 
         command = "cppcheck" + options;
     }
