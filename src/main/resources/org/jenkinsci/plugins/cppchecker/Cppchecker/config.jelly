@@ -72,15 +72,11 @@
             </f:optionalBlock>
         </f:block>
 
-        <f:block>
-            <f:optionalBlock field="supress" checked="${h.defaultToTrue(supress)}" title="--suppress=spec" help="/plugin/cppchecker/help-suppress.html">
-                <f:entry>
-                    <f:checkbox field="supress.unusedFunction" checked="${h.defaultToTrue(supress.unusedFunction)}" title="unusedFunction"/>
-                    <f:checkbox field="supress.variableScope" checked="${h.defaultToTrue(supress.variableScope)}" title="variableScope"/>
-                    <f:checkbox field="supress.unmatchedSuppression" checked="${h.defaultToTrue(supress.unmatchedSuppression)}" title="unmatchedSuppression"/>
-                </f:entry>
-            </f:optionalBlock>
-        </f:block>
+        <f:entry title="--suppress=spec" help="/plugin/cppchecker/help-suppress.html">
+            <f:checkbox field="unmatchedSuppression" checked="${h.defaultToTrue(instance.unmatchedSuppression)}" title="unmatchedSuppression"/>
+            <f:checkbox field="unusedFunction" checked="${h.defaultToTrue(instance.unusedFunction)}" title="unusedFunction"/>
+            <f:checkbox field="variableScope" checked="${h.defaultToTrue(instance.variableScope)}" title="variableScope"/>
+        </f:entry>
 
         <f:entry title="-v, --verbose">
             <f:checkbox field="verbose" checked="${verbose}"/>

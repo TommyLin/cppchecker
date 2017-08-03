@@ -59,6 +59,11 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     private final boolean enStd;
     private final StdBlock std;
 
+    /* Suppress warnings */
+    private final boolean unmatchedSuppression;
+    private final boolean unusedFunction;
+    private final boolean variableScope;
+
     public static class StdBlock {
 
         private final boolean posix;
@@ -87,7 +92,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             boolean enPerformance, boolean enPortability, boolean enInformation,
             boolean enUnusedFunction, boolean enMissingInclude,
             boolean force, String includeDir, boolean inconclusive, boolean quiet,
-            StdBlock std
+            StdBlock std, boolean unmatchedSuppression, boolean unusedFunction,
+            boolean variableScope
     ) {
         this.name = name;
 
@@ -113,6 +119,10 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                 : (std.posix || std.c89 || std.c99 || std.c11C || std.cpp03 || std.cpp11);
 
         syncCommands();
+
+        this.unmatchedSuppression = unmatchedSuppression;
+        this.unusedFunction = unusedFunction;
+        this.variableScope = variableScope;
     }
 
     /**
@@ -315,6 +325,18 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     public boolean getCpp11() {
         return std == null ? false : std.cpp11;
+    }
+
+    public boolean getUnmatchedSuppression() {
+        return unmatchedSuppression;
+    }
+
+    public boolean getUnusedFunction() {
+        return unusedFunction;
+    }
+
+    public boolean getVariableScope() {
+        return variableScope;
     }
 
     private String getEnableOptions() {
