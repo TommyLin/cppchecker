@@ -408,10 +408,10 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         final String options;
 
         options = (dump ? " --dump" : "")
-                + ((symbol != null) ? " -D" + this.symbol : "")
+                + ((symbol.trim().length() > 0) ? " -D" + this.symbol : "")
                 + getEnableOptions()
                 + (force ? " -f" : "")
-                + ((includeDir != null) ? " -I" + this.includeDir : "")
+                + ((includeDir.trim().length() > 0) ? " -I" + this.includeDir : "")
                 + (inconclusive ? " --inconclusive" : "")
                 + (quiet ? " -q" : "")
                 + getStandardOptions()
