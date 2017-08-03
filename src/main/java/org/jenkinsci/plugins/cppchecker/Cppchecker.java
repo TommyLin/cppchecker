@@ -64,6 +64,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     private final boolean unusedFunction;
     private final boolean variableScope;
 
+    private final boolean verbose;
+
     public static class StdBlock {
 
         private final boolean posix;
@@ -93,7 +95,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             boolean enUnusedFunction, boolean enMissingInclude,
             boolean force, String includeDir, boolean inconclusive, boolean quiet,
             StdBlock std, boolean unmatchedSuppression, boolean unusedFunction,
-            boolean variableScope
+            boolean variableScope, boolean verbose
     ) {
         this.name = name;
 
@@ -120,9 +122,12 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
         syncCommands();
 
+        /* Suppress warnings */
         this.unmatchedSuppression = unmatchedSuppression;
         this.unusedFunction = unusedFunction;
         this.variableScope = variableScope;
+
+        this.verbose = verbose;
     }
 
     /**
@@ -337,6 +342,10 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     public boolean getVariableScope() {
         return variableScope;
+    }
+
+    public boolean getVerbose() {
+        return verbose;
     }
 
     private String getEnableOptions() {
