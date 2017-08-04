@@ -513,6 +513,15 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             }
         }
 
+        public FormValidation doCheckXmlVersion(@QueryParameter String value)
+                throws IOException, ServletException {
+            if ("true".equals(value)) {
+                return FormValidation.ok();
+            } else {
+                return FormValidation.warning("Please use the new version if you can.");
+            }
+        }
+
         @Override
         public boolean isApplicable(Class<? extends AbstractProject> aClass) {
             // Indicates that this builder can be used with all kinds of project types 
