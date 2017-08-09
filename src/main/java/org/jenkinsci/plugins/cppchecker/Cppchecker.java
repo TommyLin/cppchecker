@@ -26,7 +26,7 @@ import java.io.IOException;
  * {@link DescriptorImpl#newInstance(StaplerRequest)} is invoked and a new
  * {@link Cppchecker} is created. The created instance is persisted to the
  * project configuration XML by using XStream, so this allows you to use
- * instance fields (like {@link #name}) to remember the configuration.
+ * instance fields (like {@link #oFile}) to remember the configuration.
  *
  * <p>
  * When a build is performed, the {@link #perform} method will be invoked.
@@ -35,7 +35,7 @@ import java.io.IOException;
  */
 public class Cppchecker extends Builder implements SimpleBuildStep {
 
-    private final String name;
+    private final String oFile;
     private final boolean dump;
     private final String symbol;
 
@@ -74,7 +74,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public Cppchecker(String name, boolean dump, String symbol,
+    public Cppchecker(String oFile, boolean dump, String symbol,
             boolean enAll, boolean enWarning, boolean enStyle,
             boolean enPerformance, boolean enPortability, boolean enInformation,
             boolean enUnusedFunc, boolean enMissingInc,
@@ -83,7 +83,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             boolean unmatchSuppress, boolean unusedFunc, boolean varScope,
             boolean verbose, boolean xml, boolean xmlVersion
     ) {
-        this.name = name;
+        this.oFile = oFile;
 
         this.dump = dump;
         this.symbol = symbol;
@@ -125,10 +125,10 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     /**
      * We'll use this from the {@code config.jelly}.
      *
-     * @return name
+     * @return oFile
      */
-    public String getName() {
-        return name;
+    public String getOFile() {
+        return oFile;
     }
 
     /**
@@ -351,9 +351,9 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
         // This also shows how you can consult the global configuration of the builder
         if (getDescriptor().getUseFrench()) {
-            listener.getLogger().println("Bonjour, " + name + "!");
+            listener.getLogger().println("Bonjour, " + oFile + "!");
         } else {
-            listener.getLogger().println("Hello, " + name + "!");
+            listener.getLogger().println("Hello, " + oFile + "!");
         }
     }
 
@@ -437,7 +437,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         }
 
         /**
-         * Performs on-the-fly validation of the form field 'name'.
+         * Performs on-the-fly validation of various form field.
          *
          * @param value This parameter receives the value that the user has
          * typed.
@@ -495,7 +495,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          * @throws java.io.IOException TODO: Add description
          * @throws javax.servlet.ServletException TODO: Add description
          */
-        public FormValidation doCheckName(@QueryParameter String value,
+        public FormValidation doCheckOFile(@QueryParameter String value,
                 @QueryParameter boolean dump,
                 @QueryParameter String symbol,
                 @QueryParameter boolean enAll,
@@ -524,15 +524,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                 @QueryParameter boolean xmlVersion
         )
                 throws IOException, ServletException {
-            /*
-            if (value.length() == 0) {
-                return FormValidation.error("Please set a name");
-            }
-            if (value.length() < 4) {
-                return FormValidation.warning("Isn't the name too short?");
-            }
-            return FormValidation.ok();
-             */
+
             String options;
 
             options = (dump ? " --dump" : "")
@@ -551,7 +543,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                     + (xml ? " --xml" : "")
                     + (xmlVersion ? " --xml-version=2" : "");
 
-            return FormValidation.ok("cppcheck" + options);
+            return FormValidation.ok("cppcheck" + options + " . 2>" + value);
         }
 
         public FormValidation doCheckXmlVersion(@QueryParameter String value)

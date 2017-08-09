@@ -6,8 +6,8 @@
     -->
 
 
-    <f:entry title="Name" field="name">
-        <f:textbox />
+    <f:entry title="Output file" field="oFile">
+        <f:textbox default="${%cppcheck.xml}"/>
     </f:entry>
 
     <f:section title="Cppcheck Options">
