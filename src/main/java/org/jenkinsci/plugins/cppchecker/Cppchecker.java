@@ -35,8 +35,6 @@ import java.io.IOException;
  */
 public class Cppchecker extends Builder implements SimpleBuildStep {
 
-    private String command;
-
     private final String name;
     private final boolean dump;
     private final String symbol;
@@ -48,57 +46,42 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     private final boolean enPerformance;
     private final boolean enPortability;
     private final boolean enInformation;
-    private final boolean enUnusedFunction;
-    private final boolean enMissingInclude;
+    private final boolean enUnusedFunc;
+    private final boolean enMissingInc;
 
     private final boolean force;
     private final String includeDir;
     private final boolean inconclusive;
     private final boolean quiet;
 
-    private final boolean enStd;
-    private final StdBlock std;
+    /* Set standard. */
+    private final boolean posix;
+    private final boolean c89;
+    private final boolean c99;
+    private final boolean c11C;
+    private final boolean cpp03;
+    private final boolean cpp11;
 
     /* Suppress warnings */
-    private final boolean unmatchedSuppression;
-    private final boolean unusedFunction;
-    private final boolean variableScope;
+    private final boolean unmatchSuppress;
+    private final boolean unusedFunc;
+    private final boolean varScope;
 
     private final boolean verbose;
 
     private final boolean xml;
     private final boolean xmlVersion;
 
-    public static class StdBlock {
-
-        private final boolean posix;
-        private final boolean c89;
-        private final boolean c99;
-        private final boolean c11C;
-        private final boolean cpp03;
-        private final boolean cpp11;
-
-        @DataBoundConstructor
-        public StdBlock(boolean posix, boolean c89, boolean c99, boolean c11C,
-                boolean cpp03, boolean cpp11) {
-            this.posix = posix;
-            this.c89 = c89;
-            this.c99 = c99;
-            this.c11C = c11C;
-            this.cpp03 = cpp03;
-            this.cpp11 = cpp11;
-        }
-    }
-
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
     public Cppchecker(String name, boolean dump, String symbol,
             boolean enAll, boolean enWarning, boolean enStyle,
             boolean enPerformance, boolean enPortability, boolean enInformation,
-            boolean enUnusedFunction, boolean enMissingInclude,
+            boolean enUnusedFunc, boolean enMissingInc,
             boolean force, String includeDir, boolean inconclusive, boolean quiet,
-            StdBlock std, boolean unmatchedSuppression, boolean unusedFunction,
-            boolean variableScope, boolean verbose, boolean xml, boolean xmlVersion
+            boolean posix, boolean c89, boolean c99, boolean c11C, boolean cpp03, boolean cpp11,
+            boolean unmatchSuppress, boolean unusedFunc, boolean varScope,
+            boolean verbose, boolean xml, boolean xmlVersion
     ) {
         this.name = name;
 
@@ -112,28 +95,31 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.enPerformance = enPerformance;
         this.enPortability = enPortability;
         this.enInformation = enInformation;
-        this.enUnusedFunction = enUnusedFunction;
-        this.enMissingInclude = enMissingInclude;
+        this.enUnusedFunc = enUnusedFunc;
+        this.enMissingInc = enMissingInc;
 
         this.force = force;
         this.includeDir = includeDir;
         this.inconclusive = inconclusive;
         this.quiet = quiet;
-        this.std = std;
-        this.enStd = (std == null) ? false
-                : (std.posix || std.c89 || std.c99 || std.c11C || std.cpp03 || std.cpp11);
+
+        /* Set standard. */
+        this.posix = posix;
+        this.c89 = c89;
+        this.c99 = c99;
+        this.c11C = c11C;
+        this.cpp03 = cpp03;
+        this.cpp11 = cpp11;
 
         /* Suppress warnings */
-        this.unmatchedSuppression = unmatchedSuppression;
-        this.unusedFunction = unusedFunction;
-        this.variableScope = variableScope;
+        this.unmatchSuppress = unmatchSuppress;
+        this.unusedFunc = unusedFunc;
+        this.varScope = varScope;
 
         this.verbose = verbose;
 
         this.xml = xml;
         this.xmlVersion = xmlVersion;
-
-        syncCommands();
     }
 
     /**
@@ -246,8 +232,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnUnusedFunction() {
-        return enUnusedFunction;
+    public boolean getEnUnusedFunc() {
+        return enUnusedFunc;
     }
 
     /**
@@ -258,8 +244,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnMissingInclude() {
-        return enMissingInclude;
+    public boolean getEnMissingInc() {
+        return enMissingInc;
     }
 
     /**
@@ -310,44 +296,40 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         return quiet;
     }
 
-    public boolean getEnStd() {
-        return enStd;
-    }
-
     public boolean getPosix() {
-        return std == null ? false : std.posix;
+        return posix;
     }
 
     public boolean getC89() {
-        return std == null ? false : std.c89;
+        return c89;
     }
 
     public boolean getC99() {
-        return std == null ? false : std.c99;
+        return c99;
     }
 
     public boolean getC11C() {
-        return std == null ? false : std.c11C;
+        return c11C;
     }
 
     public boolean getCpp03() {
-        return std == null ? false : std.cpp03;
+        return cpp03;
     }
 
     public boolean getCpp11() {
-        return std == null ? false : std.cpp11;
+        return cpp11;
     }
 
-    public boolean getUnmatchedSuppression() {
-        return unmatchedSuppression;
+    public boolean getUnmatchSuppress() {
+        return unmatchSuppress;
     }
 
-    public boolean getUnusedFunction() {
-        return unusedFunction;
+    public boolean getUnusedFunc() {
+        return unusedFunc;
     }
 
-    public boolean getVariableScope() {
-        return variableScope;
+    public boolean getVarScope() {
+        return varScope;
     }
 
     public boolean getVerbose() {
@@ -360,73 +342,6 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     public boolean getXmlVersion() {
         return xmlVersion;
-    }
-
-    private String getEnableOptions() {
-        String selections, enableOptions;
-
-        selections = (enAll ? "all" : "")
-                + (enWarning ? ",warning" : "")
-                + (enStyle ? ",style" : "")
-                + (enPerformance ? ",performance" : "")
-                + (enPortability ? ",portability" : "")
-                + (enInformation ? ",information" : "")
-                + (enUnusedFunction ? ",unusedFunction" : "")
-                + (enMissingInclude ? ",missingInclude" : "");
-
-        if (selections.startsWith(",")) {
-            selections = selections.substring(1);
-        }
-
-        if (selections.length() == 0) {
-            enableOptions = "";
-        } else {
-            enableOptions = " --ebable=" + selections;
-        }
-
-        return enableOptions;
-    }
-
-    private String getStandardOptions() {
-        String standardOptions;
-
-        if (std != null) {
-            standardOptions = (std.posix ? " --std=posix" : "")
-                    + (std.c89 ? " --std=c89" : "")
-                    + (std.c99 ? " --std=c99" : "")
-                    + (std.c11C ? " --std=c11C" : "")
-                    + (std.cpp03 ? " --std=c++03" : "")
-                    + (std.cpp11 ? " --std=c++11" : "");
-        } else {
-            standardOptions = "";
-        }
-
-        return standardOptions;
-    }
-
-    private void syncCommands() {
-        final String options;
-
-        options = (dump ? " --dump" : "")
-                + ((symbol.trim().length() > 0) ? " -D" + this.symbol : "")
-                + getEnableOptions()
-                + (force ? " -f" : "")
-                + ((includeDir.trim().length() > 0) ? " -I" + this.includeDir : "")
-                + (inconclusive ? " --inconclusive" : "")
-                + (quiet ? " -q" : "")
-                + getStandardOptions()
-                + (unmatchedSuppression ? " --suppress=unmatchedSuppression" : "")
-                + (unusedFunction ? " --suppress=unusedFunction" : "")
-                + (variableScope ? " --suppress=variableScope" : "")
-                + (verbose ? " -v" : "")
-                + (xml ? " --xml" : "")
-                + (xmlVersion ? " --xml-version=2" : "");
-
-        command = "cppcheck" + options;
-    }
-
-    public String getCommand() {
-        return command;
     }
 
     @Override
@@ -479,11 +394,79 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             load();
         }
 
+        private String getEnableOptions(boolean enAll, boolean enWarning, boolean enStyle,
+                boolean enPerformance, boolean enPortability, boolean enInformation,
+                boolean enUnusedFunc, boolean enMissingInc
+        ) {
+            String selections, enableOptions;
+
+            selections = (enAll ? "all" : "")
+                    + (enWarning ? ",warning" : "")
+                    + (enStyle ? ",style" : "")
+                    + (enPerformance ? ",performance" : "")
+                    + (enPortability ? ",portability" : "")
+                    + (enInformation ? ",information" : "")
+                    + (enUnusedFunc ? ",unusedFunction" : "")
+                    + (enMissingInc ? ",missingInclude" : "");
+
+            if (selections.startsWith(",")) {
+                selections = selections.substring(1);
+            }
+
+            if (selections.length() == 0) {
+                enableOptions = "";
+            } else {
+                enableOptions = " --ebable=" + selections;
+            }
+
+            return enableOptions;
+        }
+
+        private String getStandardOptions(boolean posix, boolean c89, boolean c99,
+                boolean c11C, boolean cpp03, boolean cpp11) {
+            String standardOptions;
+
+            standardOptions = (posix ? " --std=posix" : "")
+                    + (c89 ? " --std=c89" : "")
+                    + (c99 ? " --std=c99" : "")
+                    + (c11C ? " --std=c11C" : "")
+                    + (cpp03 ? " --std=c++03" : "")
+                    + (cpp11 ? " --std=c++11" : "");
+
+            return standardOptions;
+        }
+
         /**
          * Performs on-the-fly validation of the form field 'name'.
          *
          * @param value This parameter receives the value that the user has
          * typed.
+         * @param dump
+         * @param symbol
+         * @param enAll
+         * @param enWarning
+         * @param enStyle
+         * @param enPerformance
+         * @param enPortability
+         * @param enInformation
+         * @param enUnusedFunc
+         * @param enMissingInc
+         * @param force
+         * @param includeDir
+         * @param inconclusive
+         * @param quiet
+         * @param posix
+         * @param c89
+         * @param c99
+         * @param c11C
+         * @param cpp03
+         * @param cpp11
+         * @param unusedFunc
+         * @param unmatchSuppress
+         * @param varScope
+         * @param verbose
+         * @param xml
+         * @param xmlVersion
          * @return Indicates the outcome of the validation. This is sent to the
          * browser.
          * <p>
@@ -493,8 +476,36 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          * @throws java.io.IOException TODO: Add description
          * @throws javax.servlet.ServletException TODO: Add description
          */
-        public FormValidation doCheckName(@QueryParameter String value)
+        public FormValidation doCheckName(@QueryParameter String value,
+                @QueryParameter boolean dump,
+                @QueryParameter String symbol,
+                @QueryParameter boolean enAll,
+                @QueryParameter boolean enWarning,
+                @QueryParameter boolean enStyle,
+                @QueryParameter boolean enPerformance,
+                @QueryParameter boolean enPortability,
+                @QueryParameter boolean enInformation,
+                @QueryParameter boolean enUnusedFunc,
+                @QueryParameter boolean enMissingInc,
+                @QueryParameter boolean force,
+                @QueryParameter String includeDir,
+                @QueryParameter boolean inconclusive,
+                @QueryParameter boolean quiet,
+                @QueryParameter boolean posix,
+                @QueryParameter boolean c89,
+                @QueryParameter boolean c99,
+                @QueryParameter boolean c11C,
+                @QueryParameter boolean cpp03,
+                @QueryParameter boolean cpp11,
+                @QueryParameter boolean unmatchSuppress,
+                @QueryParameter boolean unusedFunc,
+                @QueryParameter boolean varScope,
+                @QueryParameter boolean verbose,
+                @QueryParameter boolean xml,
+                @QueryParameter boolean xmlVersion
+        )
                 throws IOException, ServletException {
+            /*
             if (value.length() == 0) {
                 return FormValidation.error("Please set a name");
             }
@@ -502,15 +513,26 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                 return FormValidation.warning("Isn't the name too short?");
             }
             return FormValidation.ok();
-        }
+             */
+            String options;
 
-        public FormValidation doCheckDump(@QueryParameter String value)
-                throws IOException, ServletException {
-            if ("true".equals(value)) {
-                return FormValidation.warning("Enable dump!!!");
-            } else {
-                return FormValidation.warning("Disable dump!!!");
-            }
+            options = (dump ? " --dump" : "")
+                    + ((symbol.trim().length() > 0) ? (" -D" + symbol.trim()) : "")
+                    + getEnableOptions(enAll, enWarning, enStyle, enPerformance,
+                            enPortability, enInformation, enUnusedFunc, enMissingInc)
+                    + (force ? " -f" : "")
+                    + ((includeDir.trim().length() > 0) ? (" -I" + includeDir.trim()) : "")
+                    + (inconclusive ? " --inconclusive" : "")
+                    + (quiet ? " -q" : "")
+                    + getStandardOptions(posix, c89, c99, c11C, cpp03, cpp11)
+                    + (unmatchSuppress ? " --suppress=unmatchedSuppression" : "")
+                    + (unusedFunc ? " --suppress=unusedFunction" : "")
+                    + (varScope ? " --suppress=variableScope" : "")
+                    + (verbose ? " -v" : "")
+                    + (xml ? " --xml" : "")
+                    + (xmlVersion ? " --xml-version=2" : "");
+
+            return FormValidation.ok("cppcheck" + options);
         }
 
         public FormValidation doCheckXmlVersion(@QueryParameter String value)

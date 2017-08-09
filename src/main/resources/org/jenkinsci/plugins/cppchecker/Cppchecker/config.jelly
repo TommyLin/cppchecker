@@ -8,11 +8,6 @@
 
     <f:entry title="Name" field="name">
         <f:textbox />
-        <label>${%commands}</label>
-    </f:entry>
-
-    <f:entry title="${%command}">
-        <label field="command">${instance.command}</label>
     </f:entry>
 
     <f:section title="Cppcheck Options">
@@ -34,8 +29,8 @@
             <f:checkbox field="enPerformance" checked="${enPerformance}" title="performance"/>
             <f:checkbox field="enPortability" checked="${enPortability}" title="portability"/>
             <f:checkbox field="enInformation" checked="${enInformation}" title="information"/>
-            <f:checkbox field="enUnusedFunction" checked="${enUnusedFunction}" title="unusedFunction"/>
-            <f:checkbox field="enMissingInclude" checked="${enMissingInclude}" title="missingInclude"/>
+            <f:checkbox field="enUnusedFunc" checked="${enUnusedFunc}" title="unusedFunc"/>
+            <f:checkbox field="enMissingInc" checked="${enMissingInc}" title="missingInclude"/>
         </f:entry>
 
 
@@ -59,23 +54,19 @@
             <label>${%Do not show progress reports.}</label>
         </f:entry>
 
-        <f:block>
-            <f:optionalBlock field="std" checked="${instance.enStd}" title="--std=id" help="/plugin/cppchecker/help-std.html">
-                <f:entry>
-                    <f:checkbox field="posix" checked="${posix}" title="posix"/>
-                    <f:checkbox field="c89" checked="${c89}" title="c89"/>
-                    <f:checkbox field="c99" checked="${c99}" title="c99"/>
-                    <f:checkbox field="c11C" checked="${c11C}" title="c11C"/>
-                    <f:checkbox field="cpp03" checked="${cpp03}" title="c++03"/>
-                    <f:checkbox field="cpp11" checked="${cpp11}" title="c++11"/>
-                </f:entry>
-            </f:optionalBlock>
-        </f:block>
+        <f:entry title="--std=id" help="/plugin/cppchecker/help-std.html">
+            <f:checkbox field="posix" checked="${posix}" title="posix"/>
+            <f:checkbox field="c89" checked="${c89}" title="c89"/>
+            <f:checkbox field="c99" checked="${c99}" title="c99"/>
+            <f:checkbox field="c11C" checked="${c11C}" title="c11C"/>
+            <f:checkbox field="cpp03" checked="${cpp03}" title="c++03"/>
+            <f:checkbox field="cpp11" checked="${cpp11}" title="c++11"/>
+        </f:entry>
 
         <f:entry title="--suppress=spec" help="/plugin/cppchecker/help-suppress.html">
-            <f:checkbox field="unmatchedSuppression" checked="${h.defaultToTrue(instance.unmatchedSuppression)}" title="unmatchedSuppression"/>
-            <f:checkbox field="unusedFunction" checked="${h.defaultToTrue(instance.unusedFunction)}" title="unusedFunction"/>
-            <f:checkbox field="variableScope" checked="${h.defaultToTrue(instance.variableScope)}" title="variableScope"/>
+            <f:checkbox field="unmatchSuppress" checked="${h.defaultToTrue(instance.unmatchSuppress)}" title="unmatchedSuppression"/>
+            <f:checkbox field="unusedFunc" checked="${h.defaultToTrue(instance.unusedFunc)}" title="unusedFunction"/>
+            <f:checkbox field="varScope" checked="${h.defaultToTrue(instance.varScope)}" title="variableScope"/>
         </f:entry>
 
         <f:entry title="-v, --verbose">
