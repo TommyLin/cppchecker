@@ -6,7 +6,7 @@
     -->
 
 
-    <f:entry title="Output file" field="oFile">
+    <f:entry title="Output file" field="oFile" help="/plugin/cppchecker/help-oFile.html">
         <f:textbox default="${%cppcheck.xml}"/>
     </f:entry>
 
