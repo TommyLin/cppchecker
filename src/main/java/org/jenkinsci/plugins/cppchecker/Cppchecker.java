@@ -9,6 +9,7 @@ import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.tasks.Builder;
 import hudson.tasks.BuildStepDescriptor;
+import hudson.util.ArgumentListBuilder;
 import jenkins.tasks.SimpleBuildStep;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -17,6 +18,8 @@ import org.kohsuke.stapler.QueryParameter;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Sample {@link Builder}.
@@ -351,17 +354,43 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         return xmlVersion;
     }
 
+    private ArgumentListBuilder getArgs() {
+        ArgumentListBuilder args = new ArgumentListBuilder();
+
+        args.add("cppcheck");
+
+        if (this.inconclusive) {
+            args.add("--inconclusive");
+        }
+
+        args.add(".");
+        args.add("2> cppcheck.xml");
+
+        return args;
+    }
+
     @Override
     public void perform(Run<?, ?> build, FilePath workspace, Launcher launcher, TaskListener listener) {
-        // This is where you 'build' the project.
-        // Since this is a dummy, we just say 'hello world' and call that a build.
-
+        /*
         // This also shows how you can consult the global configuration of the builder
         if (getDescriptor().getUseFrench()) {
             listener.getLogger().println("Bonjour, " + oFile + "!");
         } else {
             listener.getLogger().println("Hello, " + oFile + "!");
         }
+         */
+
+        listener.getLogger().println("[Cppcheck] " + "Starting the cppcheck.");
+        try {
+            ArgumentListBuilder args = getArgs();
+
+            launcher.launch().cmds(args).envs(build.getEnvironment(listener)).stderr(listener.getLogger()).stdout(listener.getLogger()).pwd(workspace).join();
+
+        } catch (IOException | InterruptedException ex) {
+            Logger.getLogger(Cppchecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        listener.getLogger().println("[Cppcheck] " + "Ending the cppcheck.");
     }
 
     // Overridden for better type safety.
