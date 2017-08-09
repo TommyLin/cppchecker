@@ -18,6 +18,7 @@ import org.kohsuke.stapler.QueryParameter;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -364,7 +365,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         }
 
         args.add(".");
-        args.add("2> cppcheck.xml");
+        args.add("2>");
+        args.add("cppcheck.xml");
 
         return args;
     }
@@ -383,8 +385,10 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         listener.getLogger().println("[Cppcheck] " + "Starting the cppcheck.");
         try {
             ArgumentListBuilder args = getArgs();
+            OutputStream out = listener.getLogger();
 
-            launcher.launch().cmds(args).envs(build.getEnvironment(listener)).stderr(listener.getLogger()).stdout(listener.getLogger()).pwd(workspace).join();
+            //launcher.launch().cmds(args).envs(build.getEnvironment(listener)).stderr(listener.getLogger()).stdout(listener.getLogger()).pwd(workspace).join();
+            launcher.launch().cmds(args).stderr(out).stdout(out).join();
 
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(Cppchecker.class.getName()).log(Level.SEVERE, null, ex);
