@@ -10,6 +10,10 @@
         <f:textbox default="${%cppcheck.xml}"/>
     </f:entry>
 
+    <f:entry title="Target" field="target" help="/plugin/cppchecker/help-target.html">
+        <f:textbox/>
+    </f:entry>
+
     <f:section title="Cppcheck Options">
 
         <f:entry title="--dump" help="/plugin/cppchecker/help-dump.html">

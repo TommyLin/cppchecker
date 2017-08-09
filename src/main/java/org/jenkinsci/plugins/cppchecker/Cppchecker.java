@@ -36,6 +36,8 @@ import java.io.IOException;
 public class Cppchecker extends Builder implements SimpleBuildStep {
 
     private final String oFile;
+    private final String target;
+
     private final boolean dump;
     private final String symbol;
 
@@ -74,7 +76,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public Cppchecker(String oFile, boolean dump, String symbol,
+    public Cppchecker(String oFile, String target, boolean dump, String symbol,
             boolean enAll, boolean enWarning, boolean enStyle,
             boolean enPerformance, boolean enPortability, boolean enInformation,
             boolean enUnusedFunc, boolean enMissingInc,
@@ -84,6 +86,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             boolean verbose, boolean xml, boolean xmlVersion
     ) {
         this.oFile = oFile;
+        this.target = target;
 
         this.dump = dump;
         this.symbol = symbol;
@@ -129,6 +132,10 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      */
     public String getOFile() {
         return oFile;
+    }
+
+    public String getTarget() {
+        return target;
     }
 
     /**
@@ -439,8 +446,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         /**
          * Performs on-the-fly validation of various form field.
          *
-         * @param value This parameter receives the value that the user has
-         * typed.
+         * @param value Output file name
+         * @param target Saving results in file
          * @param dump Dump xml data for each translation unit. The dump files
          * have the extension .dump and contain ast, tokenlist, symboldatabase,
          * valueflow.
@@ -496,6 +503,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          * @throws javax.servlet.ServletException TODO: Add description
          */
         public FormValidation doCheckOFile(@QueryParameter String value,
+                @QueryParameter String target,
                 @QueryParameter boolean dump,
                 @QueryParameter String symbol,
                 @QueryParameter boolean enAll,
@@ -543,7 +551,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                     + (xml ? " --xml" : "")
                     + (xmlVersion ? " --xml-version=2" : "");
 
-            return FormValidation.ok("cppcheck" + options + " . 2>" + value);
+            return FormValidation.ok("cppcheck" + options + " " + target.trim() + " 2>" + value.trim());
         }
 
         public FormValidation doCheckXmlVersion(@QueryParameter String value)
