@@ -441,32 +441,51 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          *
          * @param value This parameter receives the value that the user has
          * typed.
-         * @param dump
-         * @param symbol
-         * @param enAll
-         * @param enWarning
-         * @param enStyle
-         * @param enPerformance
-         * @param enPortability
-         * @param enInformation
-         * @param enUnusedFunc
-         * @param enMissingInc
-         * @param force
-         * @param includeDir
-         * @param inconclusive
-         * @param quiet
-         * @param posix
-         * @param c89
-         * @param c99
-         * @param c11C
-         * @param cpp03
-         * @param cpp11
-         * @param unusedFunc
-         * @param unmatchSuppress
-         * @param varScope
-         * @param verbose
-         * @param xml
-         * @param xmlVersion
+         * @param dump Dump xml data for each translation unit. The dump files
+         * have the extension .dump and contain ast, tokenlist, symboldatabase,
+         * valueflow.
+         * @param symbol Define preprocessor symbol. Unless --max-configs or
+         * --force is used, Cppcheck will only check the given configuration
+         * when -D is used. Example: '-DDEBUG=1 -D__cplusplus'.
+         * @param enAll Enable all checks. It is recommended to only use
+         * --enable=all when the whole program is scanned, because this enables
+         * unusedFunction.
+         * @param enWarning Enable warning messages
+         * @param enStyle Enable all coding style checks. All messages with the
+         * severities 'style', 'performance' and 'portability' are enabled.
+         * @param enPerformance Enable performance messages
+         * @param enPortability Enable portability messages
+         * @param enInformation Enable information messages
+         * @param enUnusedFunc Check for unused functions. It is recommend to
+         * only enable this when the whole program is scanned.
+         * @param enMissingInc Warn if there are missing includes. For detailed
+         * information, use '--check-config'.
+         * @param force Force checking of all configurations in files. If used
+         * together with '--max-configs=', the last option is the one that is
+         * effective.
+         * @param includeDir Give path to search for include files. Give several
+         * -I parameters to give several paths. First given path is searched for
+         * contained header files first. If paths are relative to source files,
+         * this is not needed.
+         * @param inconclusive Allow that Cppcheck reports even though the
+         * analysis is inconclusive. There are false positives with this option.
+         * Each result must be carefully investigated before you know if it is
+         * good or bad.
+         * @param quiet Do not show progress reports.
+         * @param posix POSIX compatible code
+         * @param c89 C code is C89 compatible
+         * @param c99 C code is C99 compatible
+         * @param c11C C code is C11 compatible (default)
+         * @param cpp03 C++ code is C++03 compatible
+         * @param cpp11 C++ code is C++11 compatible (default)
+         * @param unusedFunc Suppress warnings
+         * unmatchedSuppressionunusedFunction
+         * @param unmatchSuppress Suppress warnings unmatchedSuppression
+         * @param varScope Suppress warnings variableScope
+         * @param verbose Output more detailed error information.
+         * @param xml Write results in xml format to error stream (stderr).
+         * @param xmlVersion Select the XML file version. Currently versions 1
+         * and 2 are available. The default version is 1.
          * @return Indicates the outcome of the validation. This is sent to the
          * browser.
          * <p>
