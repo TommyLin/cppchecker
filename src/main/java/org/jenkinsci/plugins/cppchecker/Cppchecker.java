@@ -66,7 +66,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     private final boolean posix;
     private final boolean c89;
     private final boolean c99;
-    private final boolean c11C;
+    private final boolean c11;
     private final boolean cpp03;
     private final boolean cpp11;
 
@@ -87,7 +87,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             boolean enPerformance, boolean enPortability, boolean enInfo,
             boolean enUnusedFunc, boolean enMissingInc,
             boolean force, String includeDir, boolean inconclusive, boolean quiet,
-            boolean posix, boolean c89, boolean c99, boolean c11C, boolean cpp03, boolean cpp11,
+            boolean posix, boolean c89, boolean c99, boolean c11, boolean cpp03, boolean cpp11,
             boolean unmatchSuppress, boolean unusedFunc, boolean varScope,
             boolean verbose, boolean xml, boolean xmlVer
     ) {
@@ -116,7 +116,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.posix = posix;
         this.c89 = c89;
         this.c99 = c99;
-        this.c11C = c11C;
+        this.c11 = c11;
         this.cpp03 = cpp03;
         this.cpp11 = cpp11;
 
@@ -321,8 +321,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         return c99;
     }
 
-    public boolean getC11C() {
-        return c11C;
+    public boolean getC11() {
+        return c11;
     }
 
     public boolean getCpp03() {
@@ -423,27 +423,27 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         }
 
         if (this.posix) {
-            args.add("-std=posix");
+            args.add("--std=posix");
         }
 
         if (this.c89) {
-            args.add("-std=c89");
+            args.add("--std=c89");
         }
 
         if (this.c99) {
-            args.add("-std=c99");
+            args.add("--std=c99");
         }
 
-        if (this.c11C) {
-            args.add("-std=c11C");
+        if (this.c11) {
+            args.add("--std=c11");
         }
 
         if (this.cpp03) {
-            args.add("-std=cpp03");
+            args.add("--std=c++03");
         }
 
         if (this.cpp11) {
-            args.add("-std=cpp11");
+            args.add("--std=c++11");
         }
 
         if (this.unmatchSuppress) {
@@ -554,13 +554,13 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         }
 
         private String getStandardOptions(boolean posix, boolean c89, boolean c99,
-                boolean c11C, boolean cpp03, boolean cpp11) {
+                boolean c11, boolean cpp03, boolean cpp11) {
             String standardOptions;
 
             standardOptions = (posix ? " --std=posix" : "")
                     + (c89 ? " --std=c89" : "")
                     + (c99 ? " --std=c99" : "")
-                    + (c11C ? " --std=c11C" : "")
+                    + (c11 ? " --std=c11" : "")
                     + (cpp03 ? " --std=c++03" : "")
                     + (cpp11 ? " --std=c++11" : "");
 
@@ -606,7 +606,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          * @param posix POSIX compatible code
          * @param c89 C code is C89 compatible
          * @param c99 C code is C99 compatible
-         * @param c11C C code is C11 compatible (default)
+         * @param c11 C code is C11 compatible (default)
          * @param cpp03 C++ code is C++03 compatible
          * @param cpp11 C++ code is C++11 compatible (default)
          * @param unusedFunc Suppress warnings
@@ -645,7 +645,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                 @QueryParameter boolean posix,
                 @QueryParameter boolean c89,
                 @QueryParameter boolean c99,
-                @QueryParameter boolean c11C,
+                @QueryParameter boolean c11,
                 @QueryParameter boolean cpp03,
                 @QueryParameter boolean cpp11,
                 @QueryParameter boolean unmatchSuppress,
@@ -667,7 +667,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                     + ((includeDir.trim().length() > 0) ? (" -I" + includeDir.trim()) : "")
                     + (inconclusive ? " --inconclusive" : "")
                     + (quiet ? " -q" : "")
-                    + getStandardOptions(posix, c89, c99, c11C, cpp03, cpp11)
+                    + getStandardOptions(posix, c89, c99, c11, cpp03, cpp11)
                     + (unmatchSuppress ? " --suppress=unmatchedSuppression" : "")
                     + (unusedFunc ? " --suppress=unusedFunction" : "")
                     + (varScope ? " --suppress=variableScope" : "")
