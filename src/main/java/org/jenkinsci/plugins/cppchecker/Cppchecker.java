@@ -389,7 +389,11 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         ArgumentListBuilder args = new ArgumentListBuilder();
         String enables;
 
-        args.add("cppcheck");
+        if (getDescriptor().getUseDefault()) {
+            args.add("cppcheck");
+        } else {
+            args.add(getDescriptor().getExePath());
+        }
 
         if (this.dump) {
             args.add("--dump");
