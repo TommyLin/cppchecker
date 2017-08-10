@@ -543,7 +543,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          * <p>
          * If you don't want fields to be persisted, use {@code transient}.
          */
-        private boolean useFrench;
+        private boolean useDefault;
+        private String exePath;
 
         /**
          * In order to load the persisted global configuration, you have to call
@@ -615,8 +616,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          * @param varScope Suppress warnings variableScope
          * @param verbose Output more detailed error information.
          * @param xml Write results in xml format to error stream (stderr).
-         * @param xmlVer Select the XML file version. Currently versions 1
-         * and 2 are available. The default version is 1.
+         * @param xmlVer Select the XML file version. Currently versions 1 and 2
+         * are available. The default version is 1.
          * @return Indicates the outcome of the validation. This is sent to the
          * browser.
          * <p>
@@ -707,25 +708,30 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
             // To persist global configuration information,
             // set that to properties and call save().
-            useFrench = formData.getBoolean("useFrench");
+            useDefault = formData.getBoolean("useDefault");
+            exePath = formData.getString("exePath");
             // ^Can also use req.bindJSON(this, formData);
-            //  (easier when there are many fields; need set* methods for this, like setUseFrench)
+            //  (easier when there are many fields; need set* methods for this, like setUseDefault)
             save();
             return super.configure(req, formData);
         }
 
         /**
          * This method returns true if the global configuration says we should
-         * speak French.
+         * use default cppcheck installed in system.
          *
          * The method name is bit awkward because global.jelly calls this method
          * to determine the initial state of the checkbox by the naming
          * convention.
          *
-         * @return useFrench
+         * @return useDefault
          */
-        public boolean getUseFrench() {
-            return useFrench;
+        public boolean getUseDefault() {
+            return useDefault;
+        }
+
+        public String getExePath() {
+            return exePath;
         }
     }
 }
