@@ -10,6 +10,8 @@ import hudson.model.TaskListener;
 import hudson.tasks.Builder;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.util.ArgumentListBuilder;
+import java.io.File;
+import java.io.FileOutputStream;
 import jenkins.tasks.SimpleBuildStep;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -474,12 +476,10 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             args.add("./");
         }
 
-        args.add("2>");
-
         if (this.oFile.trim().length() > 0) {
-            args.add(this.oFile.trim());
+            args.addTokenized("2> " + this.oFile.trim());
         } else {
-            args.add("cppcheck.xml");
+            args.addTokenized("2> cppcheck.xml");
         }
 
         return args;
@@ -496,19 +496,24 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         }
          */
 
-        listener.getLogger().println("[Cppcheck] " + "Starting the cppcheck.");
+        listener.getLogger().println("[Cppchecker] " + "Starting the cppcheck.");
         try {
             ArgumentListBuilder args = getArgs();
             OutputStream out = listener.getLogger();
+            File temp = File.createTempFile("cppcheck", ".xml");
+            OutputStream err;
 
-            //launcher.launch().cmds(args).envs(build.getEnvironment(listener)).stderr(listener.getLogger()).stdout(listener.getLogger()).pwd(workspace).join();
-            launcher.launch().cmds(args).stderr(out).stdout(out).pwd(workspace).join();
+            err = new FileOutputStream(temp);
 
+            launcher.launch().cmds(args).stderr(err).stdout(out).pwd(workspace).join();
+
+            err.close();
+            temp.renameTo(new File(workspace + "/" + this.oFile.trim()));
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(Cppchecker.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        listener.getLogger().println("[Cppcheck] " + "Ending the cppcheck.");
+        listener.getLogger().println("[Cppchecker] " + "Ending the cppcheck.");
     }
 
     // Overridden for better type safety.
