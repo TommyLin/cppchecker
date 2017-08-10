@@ -7,7 +7,7 @@
 
 
     <f:entry title="Output file" field="oFile" help="/plugin/cppchecker/help-oFile.html">
-        <f:textbox default="${%cppcheck.xml}"/>
+        <f:textbox default="cppcheck.xml"/>
     </f:entry>
 
     <f:entry title="Target" field="target" help="/plugin/cppchecker/help-target.html">
@@ -28,11 +28,11 @@
 
         <f:entry title="--enable=id" help="/plugin/cppchecker/help-enable.html">
             <f:checkbox field="enAll" checked="${h.defaultToTrue(instance.enAll)}" title="all"/>
-            <f:checkbox field="enWarning" checked="${enWarning}" title="warning"/>
+            <f:checkbox field="enWarn" checked="${enWarn}" title="warning"/>
             <f:checkbox field="enStyle" checked="${enStyle}" title="style"/>
             <f:checkbox field="enPerformance" checked="${enPerformance}" title="performance"/>
             <f:checkbox field="enPortability" checked="${enPortability}" title="portability"/>
-            <f:checkbox field="enInformation" checked="${enInformation}" title="information"/>
+            <f:checkbox field="enInfo" checked="${enInfo}" title="information"/>
             <f:checkbox field="enUnusedFunc" checked="${enUnusedFunc}" title="unusedFunc"/>
             <f:checkbox field="enMissingInc" checked="${enMissingInc}" title="missingInclude"/>
         </f:entry>
@@ -83,8 +83,8 @@
             <label>${%Write results in xml format to error stream stderr.}</label>
         </f:entry>
 
-        <f:entry title="--xml-version=2" help="/plugin/cppchecker/help-xmlVersion.html">
-            <f:checkbox field="xmlVersion" checked="${h.defaultToTrue(instance.xmlVersion)}"/>
+        <f:entry title="--xml-version=2" help="/plugin/cppchecker/help-xmlVer.html">
+            <f:checkbox field="xmlVer" checked="${h.defaultToTrue(instance.xmlVer)}"/>
             <label>${%Checked to select the XML file version 2. }</label>
         </f:entry>
 

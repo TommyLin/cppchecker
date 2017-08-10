@@ -49,11 +49,11 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
     /* Enable additional checks. */
     private final boolean enAll;
-    private final boolean enWarning;
+    private final boolean enWarn;
     private final boolean enStyle;
     private final boolean enPerformance;
     private final boolean enPortability;
-    private final boolean enInformation;
+    private final boolean enInfo;
     private final boolean enUnusedFunc;
     private final boolean enMissingInc;
 
@@ -78,18 +78,18 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
     private final boolean verbose;
 
     private final boolean xml;
-    private final boolean xmlVersion;
+    private final boolean xmlVer;
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
     public Cppchecker(String oFile, String target, boolean dump, String symbol,
-            boolean enAll, boolean enWarning, boolean enStyle,
-            boolean enPerformance, boolean enPortability, boolean enInformation,
+            boolean enAll, boolean enWarn, boolean enStyle,
+            boolean enPerformance, boolean enPortability, boolean enInfo,
             boolean enUnusedFunc, boolean enMissingInc,
             boolean force, String includeDir, boolean inconclusive, boolean quiet,
             boolean posix, boolean c89, boolean c99, boolean c11C, boolean cpp03, boolean cpp11,
             boolean unmatchSuppress, boolean unusedFunc, boolean varScope,
-            boolean verbose, boolean xml, boolean xmlVersion
+            boolean verbose, boolean xml, boolean xmlVer
     ) {
         this.oFile = oFile;
         this.target = target;
@@ -99,11 +99,11 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
         /* Enable additional checks. */
         this.enAll = enAll;
-        this.enWarning = enWarning;
+        this.enWarn = enWarn;
         this.enStyle = enStyle;
         this.enPerformance = enPerformance;
         this.enPortability = enPortability;
-        this.enInformation = enInformation;
+        this.enInfo = enInfo;
         this.enUnusedFunc = enUnusedFunc;
         this.enMissingInc = enMissingInc;
 
@@ -128,7 +128,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         this.verbose = verbose;
 
         this.xml = xml;
-        this.xmlVersion = xmlVersion;
+        this.xmlVer = xmlVer;
     }
 
     /**
@@ -188,8 +188,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnWarning() {
-        return enWarning;
+    public boolean getEnWarn() {
+        return enWarn;
     }
 
     /**
@@ -233,8 +233,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
      * @return true: Enable<br>
      * false: Disable
      */
-    public boolean getEnInformation() {
-        return enInformation;
+    public boolean getEnInfo() {
+        return enInfo;
     }
 
     /**
@@ -353,22 +353,22 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         return xml;
     }
 
-    public boolean getXmlVersion() {
-        return xmlVersion;
+    public boolean getXmlVer() {
+        return xmlVer;
     }
 
-    private static String getEnableOptions(boolean enAll, boolean enWarning, boolean enStyle,
-            boolean enPerformance, boolean enPortability, boolean enInformation,
+    private static String getEnableOptions(boolean enAll, boolean enWarn, boolean enStyle,
+            boolean enPerformance, boolean enPortability, boolean enInfo,
             boolean enUnusedFunc, boolean enMissingInc
     ) {
         String selections, enableOptions;
 
         selections = (enAll ? "all" : "")
-                + (enWarning ? ",warning" : "")
+                + (enWarn ? ",warning" : "")
                 + (enStyle ? ",style" : "")
                 + (enPerformance ? ",performance" : "")
                 + (enPortability ? ",portability" : "")
-                + (enInformation ? ",information" : "")
+                + (enInfo ? ",information" : "")
                 + (enUnusedFunc ? ",unusedFunction" : "")
                 + (enMissingInc ? ",missingInclude" : "");
 
@@ -399,8 +399,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             args.add("-D" + symbol.trim());
         }
 
-        enables = getEnableOptions(this.enAll, this.enWarning, this.enStyle,
-                this.enPerformance, this.enPortability, this.enInformation,
+        enables = getEnableOptions(this.enAll, this.enWarn, this.enStyle,
+                this.enPerformance, this.enPortability, this.enInfo,
                 this.enUnusedFunc, this.enMissingInc);
         if (enables.trim().length() > 0) {
             args.add(enables.trim());
@@ -466,7 +466,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             args.add("--xml");
         }
 
-        if (this.xmlVersion) {
+        if (this.xmlVer) {
             args.add("--xml-version=2");
         }
 
@@ -581,12 +581,12 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          * @param enAll Enable all checks. It is recommended to only use
          * --enable=all when the whole program is scanned, because this enables
          * unusedFunction.
-         * @param enWarning Enable warning messages
+         * @param enWarn Enable warning messages
          * @param enStyle Enable all coding style checks. All messages with the
          * severities 'style', 'performance' and 'portability' are enabled.
          * @param enPerformance Enable performance messages
          * @param enPortability Enable portability messages
-         * @param enInformation Enable information messages
+         * @param enInfo Enable information messages
          * @param enUnusedFunc Check for unused functions. It is recommend to
          * only enable this when the whole program is scanned.
          * @param enMissingInc Warn if there are missing includes. For detailed
@@ -615,7 +615,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          * @param varScope Suppress warnings variableScope
          * @param verbose Output more detailed error information.
          * @param xml Write results in xml format to error stream (stderr).
-         * @param xmlVersion Select the XML file version. Currently versions 1
+         * @param xmlVer Select the XML file version. Currently versions 1
          * and 2 are available. The default version is 1.
          * @return Indicates the outcome of the validation. This is sent to the
          * browser.
@@ -631,11 +631,11 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                 @QueryParameter boolean dump,
                 @QueryParameter String symbol,
                 @QueryParameter boolean enAll,
-                @QueryParameter boolean enWarning,
+                @QueryParameter boolean enWarn,
                 @QueryParameter boolean enStyle,
                 @QueryParameter boolean enPerformance,
                 @QueryParameter boolean enPortability,
-                @QueryParameter boolean enInformation,
+                @QueryParameter boolean enInfo,
                 @QueryParameter boolean enUnusedFunc,
                 @QueryParameter boolean enMissingInc,
                 @QueryParameter boolean force,
@@ -653,7 +653,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                 @QueryParameter boolean varScope,
                 @QueryParameter boolean verbose,
                 @QueryParameter boolean xml,
-                @QueryParameter boolean xmlVersion
+                @QueryParameter boolean xmlVer
         )
                 throws IOException, ServletException {
 
@@ -661,8 +661,8 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
 
             options = (dump ? " --dump" : "")
                     + ((symbol.trim().length() > 0) ? (" -D" + symbol.trim()) : "")
-                    + getEnableOptions(enAll, enWarning, enStyle, enPerformance,
-                            enPortability, enInformation, enUnusedFunc, enMissingInc)
+                    + getEnableOptions(enAll, enWarn, enStyle, enPerformance,
+                            enPortability, enInfo, enUnusedFunc, enMissingInc)
                     + (force ? " -f" : "")
                     + ((includeDir.trim().length() > 0) ? (" -I" + includeDir.trim()) : "")
                     + (inconclusive ? " --inconclusive" : "")
@@ -673,12 +673,12 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
                     + (varScope ? " --suppress=variableScope" : "")
                     + (verbose ? " -v" : "")
                     + (xml ? " --xml" : "")
-                    + (xmlVersion ? " --xml-version=2" : "");
+                    + (xmlVer ? " --xml-version=2" : "");
 
             return FormValidation.ok("cppcheck" + options + " " + target.trim() + " 2>" + value.trim());
         }
 
-        public FormValidation doCheckXmlVersion(@QueryParameter String value)
+        public FormValidation doCheckXmlVer(@QueryParameter String value)
                 throws IOException, ServletException {
             if ("true".equals(value)) {
                 return FormValidation.ok();
