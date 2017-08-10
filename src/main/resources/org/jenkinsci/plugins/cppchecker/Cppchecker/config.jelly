@@ -54,7 +54,7 @@
         </f:entry>
 
         <f:entry title="-q, --quiet">
-            <f:checkbox field="quiet" checked="${h.defaultToTrue(instance.quiet)}" />
+            <f:checkbox field="quiet" checked="${instance.quiet}" />
             <label>${%Do not show progress reports.}</label>
         </f:entry>
 
