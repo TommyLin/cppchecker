@@ -355,18 +355,132 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         return xmlVersion;
     }
 
+    private static String getEnableOptions(boolean enAll, boolean enWarning, boolean enStyle,
+            boolean enPerformance, boolean enPortability, boolean enInformation,
+            boolean enUnusedFunc, boolean enMissingInc
+    ) {
+        String selections, enableOptions;
+
+        selections = (enAll ? "all" : "")
+                + (enWarning ? ",warning" : "")
+                + (enStyle ? ",style" : "")
+                + (enPerformance ? ",performance" : "")
+                + (enPortability ? ",portability" : "")
+                + (enInformation ? ",information" : "")
+                + (enUnusedFunc ? ",unusedFunction" : "")
+                + (enMissingInc ? ",missingInclude" : "");
+
+        if (selections.startsWith(",")) {
+            selections = selections.substring(1);
+        }
+
+        if (selections.length() == 0) {
+            enableOptions = "";
+        } else {
+            enableOptions = " --enable=" + selections;
+        }
+
+        return enableOptions;
+    }
+
     private ArgumentListBuilder getArgs() {
         ArgumentListBuilder args = new ArgumentListBuilder();
+        String enables;
 
         args.add("cppcheck");
+
+        if (this.dump) {
+            args.add("--dump");
+        }
+
+        if (this.symbol.trim().length() > 0) {
+            args.add("-D" + symbol.trim());
+        }
+
+        enables = getEnableOptions(this.enAll, this.enWarning, this.enStyle,
+                this.enPerformance, this.enPortability, this.enInformation,
+                this.enUnusedFunc, this.enMissingInc);
+        if (enables.trim().length() > 0) {
+            args.add(enables.trim());
+        }
+
+        if (this.force) {
+            args.add("-f");
+        }
+
+        if (this.includeDir.trim().length() > 0) {
+            args.add("-I" + this.includeDir.trim());
+        }
 
         if (this.inconclusive) {
             args.add("--inconclusive");
         }
 
-        args.add(".");
+        if (this.quiet) {
+            args.add("-q");
+        }
+
+        if (this.posix) {
+            args.add("-std=posix");
+        }
+
+        if (this.c89) {
+            args.add("-std=c89");
+        }
+
+        if (this.c99) {
+            args.add("-std=c99");
+        }
+
+        if (this.c11C) {
+            args.add("-std=c11C");
+        }
+
+        if (this.cpp03) {
+            args.add("-std=cpp03");
+        }
+
+        if (this.cpp11) {
+            args.add("-std=cpp11");
+        }
+
+        if (this.unmatchSuppress) {
+            args.add("--suppress=unmatchedSuppression");
+        }
+
+        if (this.unusedFunc) {
+            args.add("--suppress=unusedFunction");
+        }
+
+        if (this.varScope) {
+            args.add("--suppress=variableScope");
+        }
+
+        if (this.verbose) {
+            args.add("-v");
+        }
+
+        if (this.xml) {
+            args.add("--xml");
+        }
+
+        if (this.xmlVersion) {
+            args.add("--xml-version=2");
+        }
+
+        if (this.target.trim().length() > 0) {
+            args.add(this.target.trim());
+        } else {
+            args.add("./");
+        }
+
         args.add("2>");
-        args.add("cppcheck.xml");
+
+        if (this.oFile.trim().length() > 0) {
+            args.add(this.oFile.trim());
+        } else {
+            args.add("cppcheck.xml");
+        }
 
         return args;
     }
@@ -388,7 +502,7 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             OutputStream out = listener.getLogger();
 
             //launcher.launch().cmds(args).envs(build.getEnvironment(listener)).stderr(listener.getLogger()).stdout(listener.getLogger()).pwd(workspace).join();
-            launcher.launch().cmds(args).stderr(out).stdout(out).join();
+            launcher.launch().cmds(args).stderr(out).stdout(out).pwd(workspace).join();
 
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(Cppchecker.class.getName()).log(Level.SEVERE, null, ex);
@@ -432,34 +546,6 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          */
         public DescriptorImpl() {
             load();
-        }
-
-        private String getEnableOptions(boolean enAll, boolean enWarning, boolean enStyle,
-                boolean enPerformance, boolean enPortability, boolean enInformation,
-                boolean enUnusedFunc, boolean enMissingInc
-        ) {
-            String selections, enableOptions;
-
-            selections = (enAll ? "all" : "")
-                    + (enWarning ? ",warning" : "")
-                    + (enStyle ? ",style" : "")
-                    + (enPerformance ? ",performance" : "")
-                    + (enPortability ? ",portability" : "")
-                    + (enInformation ? ",information" : "")
-                    + (enUnusedFunc ? ",unusedFunction" : "")
-                    + (enMissingInc ? ",missingInclude" : "");
-
-            if (selections.startsWith(",")) {
-                selections = selections.substring(1);
-            }
-
-            if (selections.length() == 0) {
-                enableOptions = "";
-            } else {
-                enableOptions = " --ebable=" + selections;
-            }
-
-            return enableOptions;
         }
 
         private String getStandardOptions(boolean posix, boolean c89, boolean c99,
