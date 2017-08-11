@@ -16,77 +16,81 @@
 
     <f:section title="Cppcheck Options">
 
-        <f:entry title="--dump" help="/plugin/cppchecker/help-dump.html">
-            <f:checkbox field="dump" checked="${dump}"/>
-            <label>${%Dump xml data for each translation unit.}</label>
-        </f:entry>
+        <f:advanced>
 
-        <f:entry title="-D[ID]" field="symbol" help="/plugin/cppchecker/help-symbol.html">
-            <label>${%Define preprocessor symbol. Example: '-DDEBUG=1 -D__cplusplus'.}</label>
-            <f:textbox />
-        </f:entry>
+            <f:entry title="--dump" help="/plugin/cppchecker/help-dump.html">
+                <f:checkbox field="dump" checked="${dump}"/>
+                <label>${%Dump xml data for each translation unit.}</label>
+            </f:entry>
 
-        <f:entry title="--enable=id" help="/plugin/cppchecker/help-enable.html">
-            <f:checkbox field="enAll" checked="${h.defaultToTrue(instance.enAll)}" title="all"/>
-            <f:checkbox field="enWarn" checked="${enWarn}" title="warning"/>
-            <f:checkbox field="enStyle" checked="${enStyle}" title="style"/>
-            <f:checkbox field="enPerformance" checked="${enPerformance}" title="performance"/>
-            <f:checkbox field="enPortability" checked="${enPortability}" title="portability"/>
-            <f:checkbox field="enInfo" checked="${enInfo}" title="information"/>
-            <f:checkbox field="enUnusedFunc" checked="${enUnusedFunc}" title="unusedFunc"/>
-            <f:checkbox field="enMissingInc" checked="${enMissingInc}" title="missingInclude"/>
-        </f:entry>
+            <f:entry title="-D[ID]" field="symbol" help="/plugin/cppchecker/help-symbol.html">
+                <label>${%Define preprocessor symbol. Example: '-DDEBUG=1 -D__cplusplus'.}</label>
+                <f:textbox />
+            </f:entry>
+
+            <f:entry title="--enable=id" help="/plugin/cppchecker/help-enable.html">
+                <f:checkbox field="enAll" checked="${h.defaultToTrue(instance.enAll)}" title="all"/>
+                <f:checkbox field="enWarn" checked="${enWarn}" title="warning"/>
+                <f:checkbox field="enStyle" checked="${enStyle}" title="style"/>
+                <f:checkbox field="enPerformance" checked="${enPerformance}" title="performance"/>
+                <f:checkbox field="enPortability" checked="${enPortability}" title="portability"/>
+                <f:checkbox field="enInfo" checked="${enInfo}" title="information"/>
+                <f:checkbox field="enUnusedFunc" checked="${enUnusedFunc}" title="unusedFunc"/>
+                <f:checkbox field="enMissingInc" checked="${enMissingInc}" title="missingInclude"/>
+            </f:entry>
 
 
-        <f:entry title="-f, --force" help="/plugin/cppchecker/help-force.html">
-            <f:checkbox field="force" checked="${force}"/>
-            <label>${%Force checking of all configurations in files.}</label>
-        </f:entry>
+            <f:entry title="-f, --force" help="/plugin/cppchecker/help-force.html">
+                <f:checkbox field="force" checked="${force}"/>
+                <label>${%Force checking of all configurations in files.}</label>
+            </f:entry>
 
-        <f:entry title="-I [dir]" field="includeDir" help="/plugin/cppchecker/help-include.html">
-            <label>${%Give path to search for include files.}</label>
-            <f:textbox />
-        </f:entry>
+            <f:entry title="-I [dir]" field="includeDir" help="/plugin/cppchecker/help-include.html">
+                <label>${%Give path to search for include files.}</label>
+                <f:textbox />
+            </f:entry>
 
-        <f:entry title="--inconclusive" help="/plugin/cppchecker/help-inconclusive.html">
-            <f:checkbox field="inconclusive" checked="${h.defaultToTrue(instance.inconclusive)}"/>
-            <label>${%Allow that Cppcheck reports even though the analysis is inconclusive.}</label>
-        </f:entry>
+            <f:entry title="--inconclusive" help="/plugin/cppchecker/help-inconclusive.html">
+                <f:checkbox field="inconclusive" checked="${h.defaultToTrue(instance.inconclusive)}"/>
+                <label>${%Allow that Cppcheck reports even though the analysis is inconclusive.}</label>
+            </f:entry>
 
-        <f:entry title="-q, --quiet">
-            <f:checkbox field="quiet" checked="${instance.quiet}" />
-            <label>${%Do not show progress reports.}</label>
-        </f:entry>
+            <f:entry title="-q, --quiet">
+                <f:checkbox field="quiet" checked="${instance.quiet}" />
+                <label>${%Do not show progress reports.}</label>
+            </f:entry>
 
-        <f:entry title="--std=id" help="/plugin/cppchecker/help-std.html">
-            <f:checkbox field="posix" checked="${posix}" title="posix"/>
-            <f:checkbox field="c89" checked="${c89}" title="c89"/>
-            <f:checkbox field="c99" checked="${c99}" title="c99"/>
-            <f:checkbox field="c11" checked="${c11}" title="c11"/>
-            <f:checkbox field="cpp03" checked="${cpp03}" title="c++03"/>
-            <f:checkbox field="cpp11" checked="${cpp11}" title="c++11"/>
-        </f:entry>
+            <f:entry title="--std=id" help="/plugin/cppchecker/help-std.html">
+                <f:checkbox field="posix" checked="${posix}" title="posix"/>
+                <f:checkbox field="c89" checked="${c89}" title="c89"/>
+                <f:checkbox field="c99" checked="${c99}" title="c99"/>
+                <f:checkbox field="c11" checked="${c11}" title="c11"/>
+                <f:checkbox field="cpp03" checked="${cpp03}" title="c++03"/>
+                <f:checkbox field="cpp11" checked="${cpp11}" title="c++11"/>
+            </f:entry>
 
-        <f:entry title="--suppress=spec" help="/plugin/cppchecker/help-suppress.html">
-            <f:checkbox field="unmatchSuppress" checked="${h.defaultToTrue(instance.unmatchSuppress)}" title="unmatchedSuppression"/>
-            <f:checkbox field="unusedFunc" checked="${h.defaultToTrue(instance.unusedFunc)}" title="unusedFunction"/>
-            <f:checkbox field="varScope" checked="${h.defaultToTrue(instance.varScope)}" title="variableScope"/>
-        </f:entry>
+            <f:entry title="--suppress=spec" help="/plugin/cppchecker/help-suppress.html">
+                <f:checkbox field="unmatchSuppress" checked="${h.defaultToTrue(instance.unmatchSuppress)}" title="unmatchedSuppression"/>
+                <f:checkbox field="unusedFunc" checked="${h.defaultToTrue(instance.unusedFunc)}" title="unusedFunction"/>
+                <f:checkbox field="varScope" checked="${h.defaultToTrue(instance.varScope)}" title="variableScope"/>
+            </f:entry>
 
-        <f:entry title="-v, --verbose">
-            <f:checkbox field="verbose" checked="${verbose}"/>
-            <label>${%Output more detailed error information.}</label>
-        </f:entry>
+            <f:entry title="-v, --verbose">
+                <f:checkbox field="verbose" checked="${verbose}"/>
+                <label>${%Output more detailed error information.}</label>
+            </f:entry>
 
-        <f:entry title="--xml">
-            <f:checkbox field="xml" checked="${h.defaultToTrue(instance.xml)}" />
-            <label>${%Write results in xml format to error stream stderr.}</label>
-        </f:entry>
+            <f:entry title="--xml">
+                <f:checkbox field="xml" checked="${h.defaultToTrue(instance.xml)}" />
+                <label>${%Write results in xml format to error stream stderr.}</label>
+            </f:entry>
 
-        <f:entry title="--xml-version=2" help="/plugin/cppchecker/help-xmlVer.html">
-            <f:checkbox field="xmlVer" checked="${h.defaultToTrue(instance.xmlVer)}"/>
-            <label>${%Checked to select the XML file version 2. }</label>
-        </f:entry>
+            <f:entry title="--xml-version=2" help="/plugin/cppchecker/help-xmlVer.html">
+                <f:checkbox field="xmlVer" checked="${h.defaultToTrue(instance.xmlVer)}"/>
+                <label>${%Checked to select the XML file version 2. }</label>
+            </f:entry>
+
+        </f:advanced>
 
     </f:section>
 
