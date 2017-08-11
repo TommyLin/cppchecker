@@ -12,7 +12,7 @@ Option                                  | Status
 --config-excludes-file=\<file>          |
 --dump                                  | V
 -D\<ID>                                 | V
--U<ID>                                  |
+-U\<ID>                                 |
 -E                                      |
 --enable=\<id>                          | V
 --error-exitcode=\<n>                   |
@@ -43,7 +43,7 @@ Option                                  | Status
 --suppress=\<spec>                      | V
 --suppressions-list=\<file>             |
 --template='\<text>'                    |
--v, --verbose                           |
+-v, --verbose                           | V
 --version                               |
 --xml                                   | V
 --xml-version=\<version>                | V
