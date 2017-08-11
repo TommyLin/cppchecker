@@ -385,106 +385,82 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         return enableOptions;
     }
 
+    private static String getStandardOptions(boolean posix, boolean c89, boolean c99,
+            boolean c11, boolean cpp03, boolean cpp11) {
+        String standardOptions;
+
+        standardOptions = (posix ? " --std=posix" : "")
+                + (c89 ? " --std=c89" : "")
+                + (c99 ? " --std=c99" : "")
+                + (c11 ? " --std=c11" : "")
+                + (cpp03 ? " --std=c++03" : "")
+                + (cpp11 ? " --std=c++11" : "");
+
+        return standardOptions;
+    }
+
+    private static String getSuppressions(boolean unmatchSuppress, boolean unusedFunc, boolean varScope) {
+        String suppressions;
+
+        suppressions = (unmatchSuppress ? " --suppress=unmatchedSuppression" : "")
+                + (unusedFunc ? " --suppress=unusedFunction" : "")
+                + (varScope ? " --suppress=variableScope" : "");
+
+        return suppressions;
+    }
+
+    private static String getOptions(String oFile, String target, boolean dump,
+            String symbol, boolean enAll, boolean enWarn, boolean enStyle,
+            boolean enPerformance, boolean enPortability, boolean enInfo,
+            boolean enUnusedFunc, boolean enMissingInc,
+            boolean force, String includeDir, boolean inconclusive, boolean quiet,
+            boolean posix, boolean c89, boolean c99, boolean c11, boolean cpp03, boolean cpp11,
+            boolean unmatchSuppress, boolean unusedFunc, boolean varScope,
+            boolean verbose, boolean xml, boolean xmlVer) {
+
+        String options;
+
+        options = (dump ? " --dump" : "")
+                + ((symbol.trim().length() > 0) ? (" -D" + symbol.trim()) : "")
+                + getEnableOptions(enAll, enWarn, enStyle, enPerformance,
+                        enPortability, enInfo, enUnusedFunc, enMissingInc)
+                + (force ? " -f" : "")
+                + ((includeDir.trim().length() > 0) ? (" -I" + includeDir.trim()) : "")
+                + (inconclusive ? " --inconclusive" : "")
+                + (quiet ? " -q" : "")
+                + getStandardOptions(posix, c89, c99, c11, cpp03, cpp11)
+                + getSuppressions(unmatchSuppress, unusedFunc, varScope)
+                + (verbose ? " -v" : "")
+                + (xml ? " --xml" : "")
+                + (xmlVer ? " --xml-version=2" : "")
+                + ((target.trim().length() > 0) ? (" " + target.trim()) : " .")
+                + " 2>" + oFile.trim();
+
+        return options;
+    }
+
     private ArgumentListBuilder getArgs() {
         ArgumentListBuilder args = new ArgumentListBuilder();
-        String enables;
+        String command, options;
 
-        if (getDescriptor().getUseDefault()) {
-            args.add("cppcheck");
-        } else {
-            args.add(getDescriptor().getExePath());
-        }
+        args.clear();
 
-        if (this.dump) {
-            args.add("--dump");
-        }
-
-        if (this.symbol.trim().length() > 0) {
-            args.add("-D" + symbol.trim());
-        }
-
-        enables = getEnableOptions(this.enAll, this.enWarn, this.enStyle,
+        options = getOptions(this.oFile, this.target, this.dump,
+                this.symbol, this.enAll, this.enWarn, this.enStyle,
                 this.enPerformance, this.enPortability, this.enInfo,
-                this.enUnusedFunc, this.enMissingInc);
-        if (enables.trim().length() > 0) {
-            args.add(enables.trim());
-        }
+                this.enUnusedFunc, this.enMissingInc,
+                this.force, this.includeDir, this.inconclusive, this.quiet,
+                this.posix, this.c89, this.c99, this.c11, this.cpp03, this.cpp11,
+                this.unmatchSuppress, this.unusedFunc, this.varScope,
+                this.verbose, this.xml, this.xmlVer);
 
-        if (this.force) {
-            args.add("-f");
-        }
-
-        if (this.includeDir.trim().length() > 0) {
-            args.add("-I" + this.includeDir.trim());
-        }
-
-        if (this.inconclusive) {
-            args.add("--inconclusive");
-        }
-
-        if (this.quiet) {
-            args.add("-q");
-        }
-
-        if (this.posix) {
-            args.add("--std=posix");
-        }
-
-        if (this.c89) {
-            args.add("--std=c89");
-        }
-
-        if (this.c99) {
-            args.add("--std=c99");
-        }
-
-        if (this.c11) {
-            args.add("--std=c11");
-        }
-
-        if (this.cpp03) {
-            args.add("--std=c++03");
-        }
-
-        if (this.cpp11) {
-            args.add("--std=c++11");
-        }
-
-        if (this.unmatchSuppress) {
-            args.add("--suppress=unmatchedSuppression");
-        }
-
-        if (this.unusedFunc) {
-            args.add("--suppress=unusedFunction");
-        }
-
-        if (this.varScope) {
-            args.add("--suppress=variableScope");
-        }
-
-        if (this.verbose) {
-            args.add("-v");
-        }
-
-        if (this.xml) {
-            args.add("--xml");
-        }
-
-        if (this.xmlVer) {
-            args.add("--xml-version=2");
-        }
-
-        if (this.target.trim().length() > 0) {
-            args.add(this.target.trim());
+        if (!getDescriptor().getUseDefault() && (getDescriptor().getExePath() == null)) {
+            command = getDescriptor().getExePath();
         } else {
-            args.add("./");
+            command = "cppcheck";
         }
 
-        if (this.oFile.trim().length() > 0) {
-            args.addTokenized("2> " + this.oFile.trim());
-        } else {
-            args.addTokenized("2> cppcheck.xml");
-        }
+        args.addTokenized(command + options);
 
         return args;
     }
@@ -512,6 +488,11 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
             launcher.launch().cmds(args).stderr(err).stdout(out).pwd(workspace).join();
 
             err.close();
+
+            listener.getLogger().println("[Cppchecker] Source --- " + temp.getAbsolutePath());
+            listener.getLogger().println("[Cppchecker] workspace = " + workspace.getRemote());
+            listener.getLogger().println("[Cppchecker] Target --- " + this.oFile.trim());
+
             temp.renameTo(new File(workspace + "/" + this.oFile.trim()));
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(Cppchecker.class.getName()).log(Level.SEVERE, null, ex);
@@ -556,20 +537,6 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
          */
         public DescriptorImpl() {
             load();
-        }
-
-        private String getStandardOptions(boolean posix, boolean c89, boolean c99,
-                boolean c11, boolean cpp03, boolean cpp11) {
-            String standardOptions;
-
-            standardOptions = (posix ? " --std=posix" : "")
-                    + (c89 ? " --std=c89" : "")
-                    + (c99 ? " --std=c99" : "")
-                    + (c11 ? " --std=c11" : "")
-                    + (cpp03 ? " --std=c++03" : "")
-                    + (cpp11 ? " --std=c++11" : "");
-
-            return standardOptions;
         }
 
         /**
@@ -662,25 +629,23 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         )
                 throws IOException, ServletException {
 
-            String options;
+            String command, options;
 
-            options = (dump ? " --dump" : "")
-                    + ((symbol.trim().length() > 0) ? (" -D" + symbol.trim()) : "")
-                    + getEnableOptions(enAll, enWarn, enStyle, enPerformance,
-                            enPortability, enInfo, enUnusedFunc, enMissingInc)
-                    + (force ? " -f" : "")
-                    + ((includeDir.trim().length() > 0) ? (" -I" + includeDir.trim()) : "")
-                    + (inconclusive ? " --inconclusive" : "")
-                    + (quiet ? " -q" : "")
-                    + getStandardOptions(posix, c89, c99, c11, cpp03, cpp11)
-                    + (unmatchSuppress ? " --suppress=unmatchedSuppression" : "")
-                    + (unusedFunc ? " --suppress=unusedFunction" : "")
-                    + (varScope ? " --suppress=variableScope" : "")
-                    + (verbose ? " -v" : "")
-                    + (xml ? " --xml" : "")
-                    + (xmlVer ? " --xml-version=2" : "");
+            options = getOptions(value, target, dump, symbol,
+                    enAll, enWarn, enStyle, enPerformance, enPortability, enInfo,
+                    enUnusedFunc, enMissingInc,
+                    force, includeDir, inconclusive, quiet,
+                    posix, c89, c99, c11, cpp03, cpp11,
+                    unmatchSuppress, unusedFunc, varScope,
+                    verbose, xml, xmlVer);
 
-            return FormValidation.ok("cppcheck" + options + " " + target.trim() + " 2>" + value.trim());
+            if (getUseDefault() && (getExePath() == null)) {
+                command = getExePath();
+            } else {
+                command = "cppcheck";
+            }
+
+            return FormValidation.ok(command + options);
         }
 
         public FormValidation doCheckXmlVer(@QueryParameter String value)
