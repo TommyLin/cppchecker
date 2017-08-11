@@ -10,8 +10,6 @@ import hudson.model.TaskListener;
 import hudson.tasks.Builder;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.util.ArgumentListBuilder;
-import java.io.File;
-import java.io.FileOutputStream;
 import jenkins.tasks.SimpleBuildStep;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -480,20 +478,9 @@ public class Cppchecker extends Builder implements SimpleBuildStep {
         try {
             ArgumentListBuilder args = getArgs();
             OutputStream out = listener.getLogger();
-            File temp = File.createTempFile("cppcheck", ".xml");
-            OutputStream err;
+            FilePath of = new hudson.FilePath(workspace.getChannel(), workspace + "/" + this.oFile.trim());
 
-            err = new FileOutputStream(temp);
-
-            launcher.launch().cmds(args).stderr(err).stdout(out).pwd(workspace).join();
-
-            err.close();
-
-            listener.getLogger().println("[Cppchecker] Source --- " + temp.getAbsolutePath());
-            listener.getLogger().println("[Cppchecker] workspace = " + workspace.getRemote());
-            listener.getLogger().println("[Cppchecker] Target --- " + this.oFile.trim());
-
-            temp.renameTo(new File(workspace + "/" + this.oFile.trim()));
+            launcher.launch().cmds(args).stderr(of.write()).stdout(out).pwd(workspace).join();
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(Cppchecker.class.getName()).log(Level.SEVERE, null, ex);
         }
